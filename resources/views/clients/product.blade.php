@@ -51,11 +51,11 @@
 							 aria-controls="babyCare"><span class="lnr lnr-arrow-right"></span>Categories<span class="number">({{count($categorieAll)}})</span></a>
 							<ul class="collapse" id="babyCare" data-toggle="collapse" aria-expanded="false" aria-controls="babyCare">
                                 @foreach( $categorieAll as  $categorie)
-								<li class="main-nav-list child"><a href="#">{{$categorie->categorie}}<span class="number">(13)</span></a></li>
+								<li class="main-nav-list child"><a href="{{route('client.findByProductCategorie',['id'=>$categorie->id])}}">{{$categorie->categorie}}<span class="number">(13)</span></a></li>
                                 @endforeach
 
 							</ul>
-						</li>
+						</li>	
 					</ul>
 				</div>
 
@@ -64,24 +64,18 @@
 				<!-- Start Filter Bar -->
 				<div class="filter-bar d-flex flex-wrap align-items-center">
 					<div class="sorting">
-						<input type="text" placeholder="Recherche...">
+						<form action="{{route('client.findProduct')}}" method="POST">
+							@csrf
+					<input type="text" name="search" placeholder="Recherche...">
+						  <button>Valider</button>
+						</form>
 					</div>
-					<div class="sorting mr-auto">
-
-					</div>
-					<div class="pagination">
-						<a href="#" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
-						<a href="#" class="active">1</a>
-						<a href="#">2</a>
-						<a href="#">3</a>
-						<a href="#" class="dot-dot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
-						<a href="#">6</a>
-						<a href="#" class="next-arrow"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
-					</div>
+					
+					
 				</div>
 				<!-- End Filter Bar -->
 				<!-- Start Best Seller -->
-				<section class="lattest-product-area pb-40 category-list">
+				<section class="lattest-product-area pb-20 category-list">
 					<div class="row">
 
 						@foreach ($produitAll as $product )
@@ -115,12 +109,15 @@
                                             <p class="hover-text">Details</p>
                                         </a>
 									</div>
+
 								</div>
 							</div>
+
 						</div>
                         @endforeach
-
 					</div>
+					{{$produitAll->links()}}
+
 				</section>
 				<!-- End Best Seller -->
 				<!-- Start Filter Bar -->
@@ -251,7 +248,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 							</div>
 						</div>
 						<div class="col-lg-6">
-							<div class="quick-view-content">
+							<div class="quick-view-content">	
 								<div class="top">
 									<h3 class="head">Mill Oil 1000W Heater, White</h3>
 									<div class="price d-flex align-items-center"><span class="lnr lnr-tag"></span> <span class="ml-10">$149.99</span></div>

@@ -47,10 +47,10 @@ class AcceuilController extends Controller
     public function liste_index()
     {
         $categorieAll=Categorie::all();
-        $produitAll=Produit::paginate(10);
+        $produitAll=Produit::paginate(4);
         return view('clients.product',[
           'categorieAll'=>$categorieAll,
-          'produitAll'=>$produitAll
+          'produitAll'=>$produitAll     
 
         ]);
     }
@@ -66,14 +66,14 @@ class AcceuilController extends Controller
         if(!$produit){
             toastr()->warning("Informations introuvable ou produit inexistant");
             return back();
-        }
+        }   
 
         $produitCategorie=DB::table('produits')
         ->join('categories','categories.id','=','produits.categorie_id')
         ->where('categories.categorie',$produit->categorie->categorie)//si la table categories.son atribu(categirie) puis leproduit associe au categorie
        ->select('produits.*','categories.categorie')->get();
         return view("clients.details-product",compact('panier','count','produit','produitCategorie'));
-    }
+    }    
 
 
 

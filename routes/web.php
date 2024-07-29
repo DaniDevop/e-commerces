@@ -89,6 +89,8 @@ Route::get('/productByCategorie',[AcceuilController::class,'produit_by_categorie
 
 //--------------------- Partie de traitement du client--------------------------
 // GET
+Route::get('/client/liste-byCategorie/{id}',[ClientController::class,'findProductByCategorie'])->name('client.findByProductCategorie');
+
 Route::get('/client_register',[ClientController::class,'register_client'])->name('register.client');
 Route::get('/client/panier_client/',[ClientController::class,'showPanier'])->name('show.panier.client');
 Route::get('/client/dahsbord/',[ClientController::class,'dashbord_client'])->name('client.dahsbord.panier');
@@ -102,6 +104,8 @@ Route::post('/client/add-product',[ClientController::class,'addCart'])->name('cl
 
 
 // POST
+Route::post('/client/findProductByNameOrPrice',[ClientController::class,'findProduct'])->name('client.findProduct');
+
 Route::post('/client/client_auth',[ClientController::class,'login_client'])->name('client.login');
 Route::post('/add_product_to_panier/panier',[ClientController::class,'add_product_panier'])->name('product.panier');
 Route::post('/client_create',[ClientController::class,'create_client'])->name('client.create');

@@ -8,6 +8,7 @@ use App\Models\User\Produit;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddClientRequest;
+use App\Models\User\Categorie;
 use App\Models\User\Commande;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\DB;
@@ -421,5 +422,38 @@ public function valide_commande_login( $id){
     toastr()->info("Produit supprimer avec success !");
     return back();
 
+ }
+
+
+ public function findProductByCategorie($id){
+
+    $categorie=Categorie::find($id);
+    if(!$categorie){
+        flash()->error("Veuillez rafraichir la page catégorie inexsitant");
+        return back();  
+    }
+
+        $categorieAll=Categorie::all();
+        $produitAll=Produit::where('categorie_id',$categorie->id)->paginate(10);
+        return view('clients.product',[
+          'categorieAll'=>$categorieAll,
+          'produitAll'=>$produitAll
+
+        ]);
+ }
+
+
+ public function findProduct(Request $request){
+
+    $search=$request->input('search');
+
+    $categorieAll=Categorie::all();
+    $produitAll = Produit::where('designation', 'LIKE', '%' . $search . '%')
+    ->OrWhere('prix', 'LIKE', '%' . $search . '%')->paginate(10);
+    return view('clients.product',[
+          'categorieAll'=>$categorieAll,
+          'produitAll'=>$produitAll
+
+        ]);
  }
 }

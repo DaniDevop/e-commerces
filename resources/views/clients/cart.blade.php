@@ -54,7 +54,6 @@
                                 <td>
                                     <div class="media">
                                         <div class="d-flex">
-                                            <img src="img/cart.jpg" alt="">
                                             <img  width="90" src="{{asset('storage/'.$car['profile'])}}" alt="">
 
                                         </div>
