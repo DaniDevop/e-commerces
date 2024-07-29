@@ -130,7 +130,7 @@ class ClientController extends Controller
          session(['client' => $clientExist->id]);
          toastr()->info("Bienvenue a vous  ",$clientExist->nom);
 
-        return redirect()->route('client.dahsbord.panier');
+        return redirect()->route('listes.acceuil');
 
         }
 
@@ -170,7 +170,12 @@ class ClientController extends Controller
 
         $cart = session()->get('cart', []);
 
+
         if(isset($cart[$id])) {
+            if($cart[$id]['qte_commande'] > $produit->stock ){
+
+                return redirect()->back()->with('warning', 'La quantité demandé n est pas disponible');
+            }
             $cart[$id]['qte_commande']++;
         } else {
             $cart[$id] = [
@@ -300,7 +305,7 @@ public function valide_commande_login( $id){
                return back();
            }
 
-            $panier=session()->get('panier',[]);
+            $panier=session()->get('cart',[]);
             $caracteres_aleatoires = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
             $facture = 'INV' . substr(str_shuffle($caracteres_aleatoires), 0, 7);
@@ -320,7 +325,7 @@ public function valide_commande_login( $id){
                $ventes->save();
                $produit->update(['stock' => $produit->stock - $prod['qte_commande']]);
             }
-            session()->forget('panier');
+            session()->forget('cart');
             toastr()->info("Vos commandes sont valider avec success");
            return back();
        }
@@ -425,12 +430,26 @@ public function valide_commande_login( $id){
  }
 
 
+ public function remove(Request $request)
+ {
+     if($request->id) {
+         $cart = session()->get('cart');
+         if(isset($cart[$request->id])) {
+             unset($cart[$request->id]);
+             session()->put('cart', $cart);
+         }
+         session()->flash('success', 'Produit supprimé avec succès !');
+         return back();
+     }
+ }
+
+
  public function findProductByCategorie($id){
 
     $categorie=Categorie::find($id);
     if(!$categorie){
         flash()->error("Veuillez rafraichir la page catégorie inexsitant");
-        return back();  
+        return back();
     }
 
         $categorieAll=Categorie::all();
@@ -456,4 +475,28 @@ public function valide_commande_login( $id){
 
         ]);
  }
+
+ public function update_cart(Request $request){
+
+    $id=$request->input('id');
+    $produit = Produit::findOrFail($id);
+
+    if(!$produit){
+        return response()->json(['messages'=>'Un soucis c est produis !']);
+    }
+
+    $cart = session()->get('cart', []);
+
+    if(isset($cart[$id])) {
+        if($request->qte > $produit->stock ){
+            return response()->json(['messages'=>'Le nombre demandé n est pas disponible']);
+
+        }
+        $cart[$id]['qte_commande']=$request->qte;
+
+    }
+    session()->put('cart', $cart);
+    return response()->json(['messages'=>'Produit mise à jour avec sucess !']);
+
+}
 }

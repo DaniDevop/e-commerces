@@ -60,7 +60,7 @@
 							</div>
 							<div class="col-lg-7">
 								<div class="banner-img">
-									<img class="img-fluid" src="img/banner/banner-img.png" alt="">
+									<img class="img-fluid" src="{{asset('/client/img/banner/banner-img.png')}}" alt="">
 								</div>
 							</div>
 						</div>
@@ -79,7 +79,7 @@
 				<div class="col-lg-3 col-md-6 col-sm-6">
 					<div class="single-features">
 						<div class="f-icon">
-							<img src="img/features/f-icon1.png" alt="">
+							<img src="{{asset('/client/img/features/f-icon1.png')}}" alt="">
 						</div>
 						<h6>Livraison gratuite</h6>
 						<p>Free Shipping on all order</p>
@@ -89,7 +89,7 @@
 				<div class="col-lg-3 col-md-6 col-sm-6">
 					<div class="single-features">
 						<div class="f-icon">
-							<img src="img/features/f-icon2.png" alt="">
+							<img src="{{asset('/client/img/features/f-icon1.png')}}" alt="">
 						</div>
 						<h6>Return Policy</h6>
 						<p>Free Shipping on all order</p>
@@ -99,7 +99,7 @@
 				<div class="col-lg-3 col-md-6 col-sm-6">
 					<div class="single-features">
 						<div class="f-icon">
-							<img src="img/features/f-icon3.png" alt="">
+							<img src="{{asset('/client/img/features/f-icon1.png')}}" alt="">
 						</div>
 						<h6>24/7 Support</h6>
 						<p>Free Shipping on all order</p>
@@ -109,7 +109,7 @@
 				<div class="col-lg-3 col-md-6 col-sm-6">
 					<div class="single-features">
 						<div class="f-icon">
-							<img src="img/features/f-icon4.png" alt="">
+							<img src="{{asset('/client/img/features/f-icon1.png')}}" alt="">
 						</div>
 						<h6>Secure Payment</h6>
 						<p>Free Shipping on all order</p>
@@ -196,7 +196,7 @@
 				<div class="row justify-content-center">
 					<div class="col-lg-6 text-center">
 						<div class="section-title">
-							<h1>Latest Products</h1>
+							<h1>Listes Produits</h1>
 							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
 								dolore
 								magna aliqua.</p>
@@ -221,14 +221,7 @@
 										<span class="ti-bag"></span>
 										<p class="hover-text">add to bag</p>
 									</a>
-									<a href="" class="social-info">
-										<span class="lnr lnr-heart"></span>
-										<p class="hover-text">Wishlist</p>
-									</a>
-									<a href="" class="social-info">
-										<span class="lnr lnr-sync"></span>
-										<p class="hover-text">compare</p>
-									</a>
+
 									<a href="{{route('product.details',['id'=>$product->id])}}" class="social-info">
                                         <span class="lnr lnr-move"></span>
                                         <p class="hover-text">Details</p>

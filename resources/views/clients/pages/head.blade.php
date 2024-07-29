@@ -27,6 +27,7 @@
 	<link rel="stylesheet" href="{{asset('/client/css/ion.rangeSlider.skinFlat.css')}}" />
 	<link rel="stylesheet" href="{{asset('/client/css/magnific-popup.css')}}">
 	<link rel="stylesheet" href="{{asset('/client/css/main.css')}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     @livewireStyles
 
 </head>

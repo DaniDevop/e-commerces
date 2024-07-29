@@ -50,7 +50,7 @@
 							<img class="img-fluid" src="{{asset('storage/'.$produit->photo_first)}}" alt="">
 						</div>
 					</div>
-				</div>
+				</div>  
 				<div class="col-lg-5 offset-lg-1">
 					<div class="s_product_text">
 						<h3> {{$produit->designation}} </h3>

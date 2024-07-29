@@ -82,7 +82,6 @@ Route::get('admin/dashboard',[AdminControllers::class,'home'])->name('home');
 
 
 
-Route::get('/',[AcceuilController::class,'liste_acceuil'])->name('listes.acceuil');
 Route::get('/client/listes_produit',[AcceuilController::class,'liste_index'])->name('listes.index');
 Route::get('/details_product/{id}',[AcceuilController::class,'details_product'])->name('product.details');
 Route::get('/productByCategorie',[AcceuilController::class,'produit_by_categorie'])->name('categorie.produit.listes');
@@ -90,17 +89,18 @@ Route::get('/productByCategorie',[AcceuilController::class,'produit_by_categorie
 //--------------------- Partie de traitement du client--------------------------
 // GET
 Route::get('/client/liste-byCategorie/{id}',[ClientController::class,'findProductByCategorie'])->name('client.findByProductCategorie');
+Route::get('/client/supprimer-produit/{id}',[ClientController::class,'remove'])->name('client.remove.produit');
 
 Route::get('/client_register',[ClientController::class,'register_client'])->name('register.client');
 Route::get('/client/panier_client/',[ClientController::class,'showPanier'])->name('show.panier.client');
 Route::get('/client/dahsbord/',[ClientController::class,'dashbord_client'])->name('client.dahsbord.panier');
 Route::get('/annulation_commande/client/{id}',[ClientController::class,'annulation_commande'])->name('client.commande.annulation');
 Route::get('/logout_client',[ClientController::class,'logout'])->name('logout.client');
-Route::get('/validation/commande/client/{id}',[ClientController::class,'valide_commande_login'])->name('valide.login.commande');
 Route::get('/client/login',[ClientController::class,'login'])->name('login.client');
 Route::get('/lclient/register',[ClientController::class,'register'])->name('register.client');
 
 Route::post('/client/add-product',[ClientController::class,'addCart'])->name('client.add.cart');
+Route::post('/client/update-product',[ClientController::class,'update_cart'])->name('client.update.cart');
 
 
 // POST
@@ -119,3 +119,7 @@ Route::post('/ajout-client',[ClientController::class,'create_client'])->name('aj
 Route::get('/login_admin/admin',[AdminControllers::class,'login'])->name('login.admin');
 Route::post('/authentification/admin',[AdminControllers::class,'do_login'])->name('do_login.admin');
 
+Route::get('/',[AcceuilController::class,'liste_acceuil'])->name('listes.acceuil');
+Route::middleware(['auth_client'])->group(function (){
+Route::get('/validation/commande/client/',[ClientController::class,'valide_commande_login'])->name('valide.login.commande');
+});

@@ -22,6 +22,7 @@ class AcceuilController extends Controller
         ->select('categories.categorie','produits.*')->get();
         $count=$this->count_tab($panier);
         $client= session()->get('client');
+
         $categorieAll=Categorie::all();
         // session()->flush();
         return view('layout.client_front',compact('categorieAll','client','panier','produitAll','count'));
@@ -50,7 +51,7 @@ class AcceuilController extends Controller
         $produitAll=Produit::paginate(4);
         return view('clients.product',[
           'categorieAll'=>$categorieAll,
-          'produitAll'=>$produitAll     
+          'produitAll'=>$produitAll
 
         ]);
     }
@@ -66,14 +67,14 @@ class AcceuilController extends Controller
         if(!$produit){
             toastr()->warning("Informations introuvable ou produit inexistant");
             return back();
-        }   
+        }
 
         $produitCategorie=DB::table('produits')
         ->join('categories','categories.id','=','produits.categorie_id')
         ->where('categories.categorie',$produit->categorie->categorie)//si la table categories.son atribu(categirie) puis leproduit associe au categorie
        ->select('produits.*','categories.categorie')->get();
         return view("clients.details-product",compact('panier','count','produit','produitCategorie'));
-    }    
+    }
 
 
 
