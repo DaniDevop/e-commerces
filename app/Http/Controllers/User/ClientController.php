@@ -7,6 +7,7 @@ use App\Models\User\Client;
 use App\Models\User\Produit;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddClientRequest;
 use App\Models\User\Commande;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,7 @@ class ClientController extends Controller
 
 
     public function __construct(){
-        
+
     }
     public function listes_client(){
         $clients=DB::table("clients")
@@ -46,31 +47,26 @@ class ClientController extends Controller
 
       public function ajouter_client_traitement(Request $request)//store
      {
-        // Valider les données de la requête entrante
         $request->validate([
             'nom'=>'required',
             'adresse'=>'nullable',
             'tel'=>'required',
             'email'=>'nullable',
-            
-            
         ]);
-
-        // Si la validation réussit, créer une nouvelle instance d'Etudiant
        $client = new Client();
        $client->nom = $request->nom;
        $client->adresse = $request->adresse;
        $client->tel = $request->tel;
        $client->email = $request->email;
-      
-        
+
+
        $client->save();
          toastr()->success("client ajouté avec success ✨😃");
         return back();
 
      }
 
-     public function update_client(Request  $request){//traitement 
+     public function update_client(Request  $request){//traitement
         $request->validate([
             'nom'=>'required',
             'adresse'=>'nullable',
@@ -86,7 +82,7 @@ class ClientController extends Controller
        $client->tel = $request->tel;
        $client->email = $request->email;
 
-    
+
        $client->update();
          toastr()->success("client mise a jour avec success ✨😃");
         return back();
@@ -99,7 +95,7 @@ class ClientController extends Controller
 
         if (!$client) {
         return redirect('/client')->with('error', "client n'a pas été trouvé");
-        }   
+        }
 
         return view('client.detail', compact('client'));
      }
@@ -108,26 +104,33 @@ class ClientController extends Controller
 
 
         public function login_client(Request $request){//ici validate c'est pour verifier si les information existe dans la requete pour les envoyer dans la base
-        if($request->has(['EmailOrTel','password'])){
-               toastr()->info("Les champs sont obligatoire");
-               return back();
-        }
+            $request->validate([
+                'emailOrTel'=>'required',
+                'password'=>'required',
+            ],[
+                'emailOrTel.required'=>'L identifiant est requis !',
+                'password.required'=>'Le mot de passe est requis',
+            ]);
 
-        $clientExist=Client::where('email',$request->emailOrTel)->Orwhere('tel',$request->emailOrTel)->first();//cette ligne de code effectuer une recherche dans la base de données.
 
-        if(!$clientExist){//ici cest pour dire si le client n'existe pas dans la base on lui dit de creer un compt
+
+
+        $clientExist=Client::where('email',$request->emailOrTel)->first();//cette ligne de code effectuer une recherche dans la base de données.
+
+        if(!$clientExist){//ici cest pour dire si le client n'existe pas dans la base on lui dit de creer un compte
+
             toastr()->error("Informations introuvable ou veuillez creer un compte");
             return back();
         }
-         if(!Hash::check($request->password,$clientExist->password)){//ici ce pour verifier si le mdp fourni corespond au mdp qui est dans la basse 
+         if(!Hash::check($request->password,$clientExist->password)){//ici ce pour verifier si le mdp fourni corespond au mdp qui est dans la basse
             toastr()->error("Informations introuvable ou veuillez creer un compte");
             return back();
          }
          session(['client' => $clientExist->id]);
          toastr()->info("Bienvenue a vous  ",$clientExist->nom);
-    
+
         return redirect()->route('client.dahsbord.panier');
-        
+
         }
 
         public function  register_client(){
@@ -136,44 +139,57 @@ class ClientController extends Controller
         }
 
 
-        public function create_client(Request $request){//ajout client
-        $request->validate([
-            'name'=>'required',
-            'tel'=>"required",
-            'adresse'=>'nullable',
-            'password'=>"required",
-            'confirmation_password'=>"required"
-        ]);
+        public function create_client(AddClientRequest $request){//ajout client
+
         if($request->password !=$request->confirmation_password){
             toastr()->warning("Les Mots de passes ne sont pas identiques !!");
             return back();
         }
 
-        $clientExist=Client::where('email',$request->email)->Orwhere('tel',$request->tel)->first();//cette ligne de code effectuer une recherche dans la base de données s'il existe il nou renvoi une information+.
-         if( $clientExist){
-            toastr()->warning("Email ou Numéro de téléphone déjà existant !");
-            return back();
-         }
+
         $client=new Client();
-        $client->nom=$request->name;
+        $client->nom=$request->nom;
         $client->tel=$request->tel;
-        $client->adresse=$request->adresse ?:"";
-        $client->email=$request->email ?:"";
+        $client->adresse=$request->adresse;
+        $client->email=$request->email ;
         $client->password=Hash::make($request->password);
         $client->save();
         toastr()->info("Compte creer avec succes 👍✔!!");
-        return redirect()->route('listes.acceuil');
+        return redirect()->back();
 
 
 
-      
+
+    }
+
+    public function addCart(Request $request){
+
+        $id=$request->input('id');
+        $produit = Produit::findOrFail($id);
+
+        $cart = session()->get('cart', []);
+
+        if(isset($cart[$id])) {
+            $cart[$id]['qte_commande']++;
+        } else {
+            $cart[$id] = [
+              'produit_id'=>$produit->id,
+            'designation'=>$produit->designation,
+            'prix'=>$produit->prix,
+            'qte_commande'=>1,
+            'profile'=>$produit->photo_first
+            ];
+        }
+        session()->put('cart', $cart);
+        return redirect()->back()->with('success', 'Product ajouté avec success !!');
+
     }
 
     public function add_product_panier(Request $request)
     {
         // Recherche du produit par son ID
         $produit = Produit::find($request->id);
-    
+
         // Vérification si le produit existe
         if (!$produit) {
             return response()->json(['error' => 'Le produit n\'existe pas'], 404);
@@ -193,6 +209,7 @@ class ClientController extends Controller
 
 
 
+
         $panier[]=[
             'produit_id'=>$produit->id,
             'designation'=>$produit->designation,
@@ -205,19 +222,21 @@ class ClientController extends Controller
         $count=$this->count_tab($panier);
          return response()->json(['count' => $count]);
 
-     
-    }
-    
-    public function vue_panier(){
 
-       $panier=session()->get('panier',[]);
+    }
+
+    public function showPanier(){
+
+       $cart=session()->get('cart',[]);
+
        $sommeTotal=0;
-       foreach($panier as $prod){
+       foreach($cart as $prod){
         $sommeTotal=$sommeTotal+($prod['prix']*$prod['qte_commande']);
-       } 
+       }
        $client= session()->get('client');
 
-         return view("layout.liste_panier",compact('client','panier','sommeTotal'));
+
+         return view("clients.cart",compact('client','cart','sommeTotal'));
     }
 
     // Deconnection client
@@ -231,6 +250,15 @@ class ClientController extends Controller
     }
 
 
+    public function login(){
+
+        return view('clients.login');
+    }
+
+    public function register(){
+        return view('clients.register');
+
+    }
 
     public function count_tab($array){
         return count($array);
@@ -263,14 +291,14 @@ class ClientController extends Controller
     return back();
 }
 public function valide_commande_login( $id){
-    
+
            $clientExist=Client::where('id',$id)->first();//cette ligne de code effectuer une recherche dans la base de données.
-   
+
            if(!$clientExist){//ici cest pour dire si le client n'existe pas dans la base on lui dit de creer un compt
                toastr()->error("Informations introuvable ou veuillez creer un compte");
                return back();
            }
-          
+
             $panier=session()->get('panier',[]);
             $caracteres_aleatoires = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
@@ -308,7 +336,7 @@ public function valide_commande_login( $id){
             toastr()->error("Informations introuvable ou veuillez creer un compte");
             return back();
         }
-         if(!Hash::check($request->password,$clientExist->password)){//ici ce pour verifier si le mdp fourni corespond au mdp qui est dans la basse 
+         if(!Hash::check($request->password,$clientExist->password)){//ici ce pour verifier si le mdp fourni corespond au mdp qui est dans la basse
             toastr()->error("Informations introuvable ou veuillez creer un compte");
             return back();
          }
@@ -318,7 +346,7 @@ public function valide_commande_login( $id){
          $facture = 'INV' . substr(str_shuffle($caracteres_aleatoires), 0, 7);
 
          $commandes=new Commande();
-         $commandes->matricule=$facture.$clientExist->id;        
+         $commandes->matricule=$facture.$clientExist->id;
           $commandes->date=date('Y-m-d');
          $commandes->status="En-cours";
          $commandes->client_id=$clientExist->id;
@@ -336,7 +364,7 @@ public function valide_commande_login( $id){
          toastr()->info("Vos commandes sont valider avec success");
         return back();
     }
-  
+
     public function rechercher_client(Request $request){
         $searchTerm = $request->search;
 
@@ -368,7 +396,7 @@ public function valide_commande_login( $id){
     $client=Client::find($request->id);
     if($request->new_passe != $request->confirmation_password){
         toastr()->warning("Vos mots de passes sont differents");
-        return back();  
+        return back();
     }
     if(!Hash::check($request->password,$client->password)){
         toastr()->warning("Mots de passes incorect");

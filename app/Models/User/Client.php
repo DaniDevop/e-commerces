@@ -11,13 +11,13 @@ class Client extends Authenticatable
 {
     use HasFactory;
     protected $fillable=[
-        'name',
+        'nom',
         'password',
         'email'
     ];
 
-    public function commande():HasMany{//dominant    
-        return $this->hasMany(Commande::class); 
+    public function commande():HasMany{
+        return $this->hasMany(Commande::class);
 
     }
 

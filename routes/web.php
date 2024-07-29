@@ -83,29 +83,33 @@ Route::get('admin/dashboard',[AdminControllers::class,'home'])->name('home');
 
 
 Route::get('/',[AcceuilController::class,'liste_acceuil'])->name('listes.acceuil');
-Route::get('/inconnue',[AcceuilController::class,'liste_index'])->name('listes.index');
+Route::get('/client/listes_produit',[AcceuilController::class,'liste_index'])->name('listes.index');
 Route::get('/details_product/{id}',[AcceuilController::class,'details_product'])->name('product.details');
 Route::get('/productByCategorie',[AcceuilController::class,'produit_by_categorie'])->name('categorie.produit.listes');
 
 //--------------------- Partie de traitement du client--------------------------
 // GET
 Route::get('/client_register',[ClientController::class,'register_client'])->name('register.client');
-Route::get('/panier_client/client/',[ClientController::class,'vue_panier'])->name('panier.vue.client');
+Route::get('/client/panier_client/',[ClientController::class,'showPanier'])->name('show.panier.client');
 Route::get('/client/dahsbord/',[ClientController::class,'dashbord_client'])->name('client.dahsbord.panier');
 Route::get('/annulation_commande/client/{id}',[ClientController::class,'annulation_commande'])->name('client.commande.annulation');
 Route::get('/logout_client',[ClientController::class,'logout'])->name('logout.client');
 Route::get('/validation/commande/client/{id}',[ClientController::class,'valide_commande_login'])->name('valide.login.commande');
+Route::get('/client/login',[ClientController::class,'login'])->name('login.client');
+Route::get('/lclient/register',[ClientController::class,'register'])->name('register.client');
+
+Route::post('/client/add-product',[ClientController::class,'addCart'])->name('client.add.cart');
 
 
 // POST
-Route::post('/client_auth',[ClientController::class,'login_client'])->name('client.login');
+Route::post('/client/client_auth',[ClientController::class,'login_client'])->name('client.login');
 Route::post('/add_product_to_panier/panier',[ClientController::class,'add_product_panier'])->name('product.panier');
 Route::post('/client_create',[ClientController::class,'create_client'])->name('client.create');
 Route::post('/valide_commande',[ClientController::class,'valide_commande'])->name('valider.commande.panier');
 Route::post('/update_panier_client',[ClientController::class,'update_panier'])->name('update.panier.client');
-Route::post('/client_update_informations',[ClientController::class,'client_update_informations'])->name('client.update.informations');
+Route::post('/client_update_informations/update',[ClientController::class,'client_update_informations'])->name('client.update.informations');
 Route::post('/client_update_password',[ClientController::class,'update_password_clients'])->name('update.password.client');
-Route::post('/ajout-client',[ClientController::class,'ajouter_client_traitement'])->name('ajouter.client');
+Route::post('/ajout-client',[ClientController::class,'create_client'])->name('ajouter.client');
 //----------------------- Fin traitement client ----------------------------------------------
 // Admin authentification
 Route::get('/login_admin/admin',[AdminControllers::class,'login'])->name('login.admin');

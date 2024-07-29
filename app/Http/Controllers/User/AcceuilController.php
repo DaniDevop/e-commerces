@@ -16,7 +16,7 @@ class AcceuilController extends Controller
     public function liste_acceuil()
     {
         $panier = session()->get('panier',[]);
-     
+
         $produitAll=DB::table('produits')
         ->leftJoin('categories','categories.id','=','produits.categorie_id')
         ->select('categories.categorie','produits.*')->get();
@@ -46,30 +46,35 @@ class AcceuilController extends Controller
 
     public function liste_index()
     {
-        return view('layout.index');
+        $categorieAll=Categorie::all();
+        $produitAll=Produit::paginate(10);
+        return view('clients.product',[
+          'categorieAll'=>$categorieAll,
+          'produitAll'=>$produitAll
+
+        ]);
     }
 
     public function details_product($id){
         $produit=Produit::find($id);
         $panier = session()->get('panier',[]);
-     
+
+
+
 
         $count=$this->count_tab($panier);
         if(!$produit){
             toastr()->warning("Informations introuvable ou produit inexistant");
             return back();
         }
-        if(!$produit->categorie){
-            $produitCategorie=DB::table('produits')
-            ->leftjoin('categories','categories.id','=','produits.categorie_id')
-           ->select('produits.*','categories.categorie')->get();
-            return view("layout.details_product",compact('panier','count','produit','produitCategorie'));
-        }
+
         $produitCategorie=DB::table('produits')
         ->join('categories','categories.id','=','produits.categorie_id')
         ->where('categories.categorie',$produit->categorie->categorie)//si la table categories.son atribu(categirie) puis leproduit associe au categorie
        ->select('produits.*','categories.categorie')->get();
-        return view("layout.details_product",compact('panier','count','produit','produitCategorie'));
+        return view("clients.details-product",compact('panier','count','produit','produitCategorie'));
     }
+
+
 
 }
