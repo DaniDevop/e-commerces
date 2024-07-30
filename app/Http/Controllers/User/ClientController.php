@@ -242,6 +242,8 @@ class ClientController extends Controller
        $client= session()->get('client');
 
 
+
+
          return view("clients.cart",compact('client','cart','sommeTotal'));
     }
 
@@ -250,7 +252,6 @@ class ClientController extends Controller
     public function logout(){
         $client = session()->get('client');
 
-// Supprimer le client de la session
       session()->forget('client');
       return redirect()->route('listes.acceuil');
     }
@@ -296,8 +297,9 @@ class ClientController extends Controller
     toastr()->success("Quantité modifiée avec succès !");
     return back();
 }
-public function valide_commande_login( $id){
+public function valide_commande_login( Request $request){
 
+           $id =$request->input('id');
            $clientExist=Client::where('id',$id)->first();//cette ligne de code effectuer une recherche dans la base de données.
 
            if(!$clientExist){//ici cest pour dire si le client n'existe pas dans la base on lui dit de creer un compt
@@ -330,46 +332,7 @@ public function valide_commande_login( $id){
            return back();
        }
 
-    public function valide_commande(Request $request){
- if($request->has(['EmailOrTel','password'])){
-               toastr()->info("Les champs sont obligatoire");
-               return back();
-        }
 
-        $clientExist=Client::where('email',$request->emailOrTel)->Orwhere('tel',$request->emailOrTel)->first();//cette ligne de code effectuer une recherche dans la base de données.
-
-        if(!$clientExist){//ici cest pour dire si le client n'existe pas dans la base on lui dit de creer un compt
-            toastr()->error("Informations introuvable ou veuillez creer un compte");
-            return back();
-        }
-         if(!Hash::check($request->password,$clientExist->password)){//ici ce pour verifier si le mdp fourni corespond au mdp qui est dans la basse
-            toastr()->error("Informations introuvable ou veuillez creer un compte");
-            return back();
-         }
-         $panier=session()->get('panier',[]);
-         $caracteres_aleatoires = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-
-         $facture = 'INV' . substr(str_shuffle($caracteres_aleatoires), 0, 7);
-
-         $commandes=new Commande();
-         $commandes->matricule=$facture.$clientExist->id;
-          $commandes->date=date('Y-m-d');
-         $commandes->status="En-cours";
-         $commandes->client_id=$clientExist->id;
-         $commandes->save();
-         foreach($panier as $prod){
-            $produit = Produit::findOrFail($prod['produit_id']);
-            $ventes=new detail_commande();
-            $ventes->produit_id=$prod['produit_id'];
-            $ventes->commande_id=$commandes->id;
-            $ventes->qte_commande=$prod['qte_commande'];
-            $ventes->save();
-            $produit->update(['stock' => $produit->stock - $prod['qte_commande']]);
-         }
-         session()->forget('panier');
-         toastr()->info("Vos commandes sont valider avec success");
-        return back();
-    }
 
     public function rechercher_client(Request $request){
         $searchTerm = $request->search;

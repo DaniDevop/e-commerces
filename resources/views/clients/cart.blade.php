@@ -29,6 +29,7 @@
         <div class="container">
             <div class="cart_inner">
                 <div class="table-responsive">
+                    @if(count($cart) > 0 )
                     <table class="table">
                         <thead>
                             <tr>
@@ -41,7 +42,6 @@
                         </thead>
                         <tbody>
 
-                            @if(count($cart) > 0 )
                             @foreach($cart as $car)
                             <tr>
                                 <td>
@@ -81,7 +81,7 @@
                                      @if(session()->get('client'))
                                     <form action="{{route('valide.login.commande')}}">
 
-                                        <input type="hidden" name="id" value="{{$client['id']}}">
+                                        <input type="hidden" name="id" value="{{$client}}">
 
                                         <button class="gray_btn">Valider la commande</button>
                                     </form>

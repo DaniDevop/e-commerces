@@ -109,7 +109,6 @@ Route::post('/client/findProductByNameOrPrice',[ClientController::class,'findPro
 Route::post('/client/client_auth',[ClientController::class,'login_client'])->name('client.login');
 Route::post('/add_product_to_panier/panier',[ClientController::class,'add_product_panier'])->name('product.panier');
 Route::post('/client_create',[ClientController::class,'create_client'])->name('client.create');
-Route::post('/valide_commande',[ClientController::class,'valide_commande'])->name('valider.commande.panier');
 Route::post('/update_panier_client',[ClientController::class,'update_panier'])->name('update.panier.client');
 Route::post('/client_update_informations/update',[ClientController::class,'client_update_informations'])->name('client.update.informations');
 Route::post('/client_update_password',[ClientController::class,'update_password_clients'])->name('update.password.client');

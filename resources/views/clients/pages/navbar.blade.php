@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light main_box">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
-        <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
+        <a class="navbar-brand logo_h" href="/"><img src="img/logo1.png" width="90" alt=""></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="icon-bar"></span>
@@ -20,15 +20,28 @@
                     </ul>
                 </li>
 
+                 @if(!session()->get('client'))
 
                 <li class="nav-item"><a class="nav-link" href="{{route('login.client')}}">Compte</a></li>
+                @else
+                <li class="nav-item"><a class="nav-link" href="{{route('login.client')}}">Dashboard</a></li>
+                 @endif
+
+                 @if(session()->get('client'))
+
+                 <li class="nav-item"><a class="nav-link" href="{{route('logout.client')}}">Deconnexion</a></li>
+                 @endif
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="nav-item"><a href="{{route('show.panier.client')}}" class="cart"><span class="ti-bag"></span></a></li>
+                <li class="nav-item"><a href="{{route('show.panier.client')}}" class="cart"><span class="ti-bag"> {{count(session()->get('cart',[]))}} </span></a></li>
                 <li class="nav-item">
                     <button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
                 </li>
+
+
+
+
             </ul>
         </div>
     </div>
