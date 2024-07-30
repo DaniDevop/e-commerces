@@ -48,15 +48,16 @@
                                         <td>{{$command->date_livraison}}</td>
                                     </tr>
                                     @endforeach
-                               
+
                             </tbody>
                         </table>
+                        
                     </div>
                 </div>
             </div>
 
 
-            
+
             @include('partials.footer')
             <!-- Footer End -->
         </div>

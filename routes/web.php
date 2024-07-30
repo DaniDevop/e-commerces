@@ -93,7 +93,6 @@ Route::get('/client/supprimer-produit/{id}',[ClientController::class,'remove'])-
 
 Route::get('/client_register',[ClientController::class,'register_client'])->name('register.client');
 Route::get('/client/panier_client/',[ClientController::class,'showPanier'])->name('show.panier.client');
-Route::get('/client/dahsbord/',[ClientController::class,'dashbord_client'])->name('client.dahsbord.panier');
 Route::get('/annulation_commande/client/{id}',[ClientController::class,'annulation_commande'])->name('client.commande.annulation');
 Route::get('/logout_client',[ClientController::class,'logout'])->name('logout.client');
 Route::get('/client/login',[ClientController::class,'login'])->name('login.client');
@@ -121,4 +120,6 @@ Route::post('/authentification/admin',[AdminControllers::class,'do_login'])->nam
 Route::get('/',[AcceuilController::class,'liste_acceuil'])->name('listes.acceuil');
 Route::middleware(['auth_client'])->group(function (){
 Route::get('/validation/commande/client/',[ClientController::class,'valide_commande_login'])->name('valide.login.commande');
+Route::get('/client/dahsbord/',[ClientController::class,'dashbord_client'])->name('client.dahsbord.panier');
+
 });

@@ -24,7 +24,7 @@
 
                 <li class="nav-item"><a class="nav-link" href="{{route('login.client')}}">Compte</a></li>
                 @else
-                <li class="nav-item"><a class="nav-link" href="{{route('login.client')}}">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('client.dahsbord.panier')}}">Dashboard</a></li>
                  @endif
 
                  @if(session()->get('client'))

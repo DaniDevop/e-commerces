@@ -17,8 +17,7 @@ class ClientMiddelWare
     {
 
         if(!session()->get('client')){
-
-            flash()->warning('Veuillez vous connecté !');
+            toastr()->error('Veuillez vous connecté !');
             return redirect()->route('login.client');
         }
         return $next($request);

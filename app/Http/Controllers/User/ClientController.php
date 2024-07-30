@@ -42,7 +42,7 @@ class ClientController extends Controller
     ->orderBydesc('commandes.date')
     ->select('commandes.date','commandes.status as stat','produits.designation','produits.prix','produits.photo_first','detail_commandes.*')->paginate(5);
 
-        return view("layout.dashboard",compact('commande','clientExist'));
+        return view("clients.dashboard",compact('commande','clientExist'));
      }
 
 
@@ -423,6 +423,7 @@ public function valide_commande_login( Request $request){
 
         ]);
  }
+
 
 
  public function findProduct(Request $request){

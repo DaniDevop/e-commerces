@@ -50,7 +50,7 @@
 							 aria-controls="babyCare"><span class="lnr lnr-arrow-right"></span>Categories<span class="number">({{count($categorieAll)}})</span></a>
 							<ul class="collapse" id="babyCare" data-toggle="collapse" aria-expanded="false" aria-controls="babyCare">
                                 @foreach( $categorieAll as  $categorie)
-								<li class="main-nav-list child"><a href="{{route('client.findByProductCategorie',['id'=>$categorie->id])}}">{{$categorie->categorie}}<span class="number">(13)</span></a></li>
+								<li class="main-nav-list child"><a href="{{route('client.findByProductCategorie',['id'=>$categorie->id])}}">{{$categorie->categorie}}<span class="number"></span></a></li>
                                 @endforeach
 
 							</ul>
@@ -95,7 +95,7 @@
 											<span class="ti-bag"></span>
 											<p class="hover-text">add to bag</p>
 										</a>
-										
+
 										<a href="{{route('product.details',['id'=>$product->id])}}" class="social-info">
                                             <span class="lnr lnr-move"></span>
                                             <p class="hover-text">Details</p>
