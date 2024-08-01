@@ -51,41 +51,35 @@
                                 <tr>
                                     <th scope="col">Numero</th>
                                     <th scope="col">code</th>
-                                    <th scope="col">Image1</th>
-                                    <th scope="col">Image2</th>
-                                    <th scope="col">Image3</th>
+                                    <th scope="col">Image</th>
                                     <th scope="col">Designation</th>
                                     <th scope="col">Prix</th>
                                     <th scope="col">stock</th>
-                                    <th scope="col">Fournisseur</th>
                                     <th scope="col">Categorie</th>
                                     >
                                 </tr>
                             </thead>
                             <tbody>
-                                 
+
                                     <tr>
                                         <th scope="row">{{$produit->id}}</th>
                                         <td>{{$produit->code}}</td>
-                                        <th scope="row" class="zoom"> <img src="{{asset('storage/'.$produit->photo_first)}}" alt="" >  </th>
-                                        <th scope="row"> <img src="{{asset('storage/'.$produit->photo_second)}}" alt="">  </th>
-                                        <th scope="row"> <img src="{{asset('storage/'.$produit->photo_third)}}" alt="">  </th>
+                                        <th scope="row" class="zoom"> <img src="{{asset('uploads/store/'.$produit->image)}}" alt="" >  </th>
                                         <td>{{$produit->designation}}</td>
                                         <td>{{$produit->prix}}</td>
                                         <td>{{$produit->stock}}</td>
-                                        <td>{{optional($produit->fournisseur)->nom}}</td>
                                         <td>{{optional($produit->categorie)->categorie}}</td>
-                                      
+
                                     </tr>
-                                  
-                             
+
+
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-                 
+
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Modifier produit
                 </button>
@@ -115,20 +109,14 @@
                     <input type="number" class="form-control" id="stock" name="stock" placeholder="Votre stock" value="{{$produit->stock}}">
                 </div>
 
+                <div class="mb-3">
+                    <label for="stock" class="form-label">Image</label>
+                    <input type="file" min="1" class="form-control" id="stock" name="image">
+                </div>
+
 
                 <input type="hidden" class="form-control" id="" name="id" value="{{ $produit->id }}">
 
-                <div class="mb-3">
-                                <label for="email" class="form-label">fournisseur</label>
-                                <select name="fournisseur_id" id="" class="form-select">
-
-                                    <option value="{{$produit->fournisseur_id}}">Ancienne :{{optional($produit->fournisseur)->nom}}</option>
-                                        @foreach ($fournisseurAll as $user )
-                                    <option value="{{$user->id}}">{{$user->nom}}</option>
-                                    @endforeach
-                                </select>
-                               
-                            </div> 
 
 
                             <div class="mb-3">
@@ -140,18 +128,18 @@
                                     <option value="{{$cat->id}}">{{$cat->categorie}}</option>
                                     @endforeach
                                 </select>
-                               
-                            </div>  
+
+                            </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                     <button type="submit" class="btn btn-primary">Valider</button>
                 </div>
 
-                
+
             </form>
 
-                
+
             </div>
         </div>
      </div>
@@ -159,52 +147,9 @@
 
      <br>
             <br>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModals">
-                    Ajouter image
-                </button>
-
-            <div class="modal fade" id="exampleModals" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-
-                    <form action="{{route('ajouter.image')}}" method="POST" class="form-group" enctype="multipart/form-data">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="image" class="form-label">image 1</label>
-                            <input type="file" class="form-control" id="image" name="image1" placeholder="veuillez mettre votre image">
-
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="image" class="form-label">image 2</label>
-                            <input type="file" class="form-control" id="image" name="image2" placeholder="veuillez mettre votre image">
-
-                        </div> 
 
 
-                        <div class="mb-3">
-                            <label for="image" class="form-label">image 3</label>
-                            <input type="file" class="form-control" id="image" name="image3" placeholder="veuillez mettre votre image">
-
-                        </div> 
-                            
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                            <button type="submit" class="btn btn-primary">Valider</button>
-                        </div>
-                        <input type="hidden" class="form-control" id="" name="id" value="{{ $produit->id }}">
-
-                    </form>
-                        </div>
-                       
-                    </div>
-                </div>
-            </div>
+           
 
             @include('partials.footer')
             <!-- Footer End -->

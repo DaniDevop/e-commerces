@@ -43,7 +43,6 @@
                                     <th scope="col">Designation</th>
                                     <th scope="col">Prix</th>
                                     <th scope="col">stock</th>
-                                    <th scope="col">Fournisseur</th>
                                     <th scope="col">Categorie</th>
                                     <th scope="col">Details</th>
                                     <th scope="col">Supprimer</th>
@@ -57,7 +56,6 @@
                                         <td>{{$prod->designation}}</td>
                                         <td>{{$prod->prix}}</td>
                                         <td>{{$prod->stock}}</td>
-                                        <td>{{$prod->nom}}</td>
                                         <td>{{$prod->categorie}}</td>
 
                                         <td><a href="{{route('details.produit',['id'=>$prod->id])}} " class="btn btn-dark"><i class="bi bi-eye-fill"></i></a></td>
@@ -65,7 +63,7 @@
                                         <td>   <a hredf="#" onclick="confirmDelete('{{ route('delete.produit', ['id' => $prod->id]) }}')" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a> </td>
                                     </tr>
                                     @endforeach
-                             
+
                             </tbody>
                         </table>
                         {{$produits->links()}}
@@ -110,15 +108,12 @@
                                 <input type="number" min="1" class="form-control" id="stock" name="stock" placeholder="veuillez mettre votre stock">
                             </div>
 
-                            <div class="mb-3">
-                                <label for="email" class="form-label">fournisseur</label>
-                                <select name="fournisseur_id" id="" class="form-select">
-                                    @foreach ($fournisseurAll as $user )
-                                    <option value="{{$user->id}}">{{$user->nom}}</option>
-                                    @endforeach
-                                </select>
-                               
-                            </div>  
+                              <div class="mb-3">
+                                <label for="stock" class="form-label">Image</label>
+                                <input type="file" min="1" class="form-control" id="stock" name="image">
+                            </div>
+
+
 
                             <div class="mb-3">
                                 <label for="email" class="form-label">categorie</label>
@@ -127,15 +122,15 @@
                                     <option value="{{$cat->id}}">{{$cat->categorie}}</option> <!-- ici c'est la jointure on le gere au niveau de model-->
                                     @endforeach
                                 </select>
-                               
-                            </div>                            
+
+                            </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                             <button type="submit" class="btn btn-primary">Valider</button>
                         </div>
                     </form>
                         </div>
-                       
+
                     </div>
                 </div>
             </div>

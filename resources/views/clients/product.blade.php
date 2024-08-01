@@ -81,7 +81,7 @@
 
 						<div class="col-lg-4 col-md-6">
                             <div class="single-product">
-                                <img class="img-fluid" src="{{asset('storage/'.$product->photo_first)}}" alt="">
+                                <img class="img-fluid" src="{{asset('uploads/store/'.$product->image)}}" alt="">
 								<div class="product-details">
                                     <h6> {{ $product->designation}} </h6>
 

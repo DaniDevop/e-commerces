@@ -18,12 +18,9 @@ return new class extends Migration
             $table->string('code');
             $table->string('designation');
             $table->float('prix');
-            $table->string('photo_first');
-            $table->string('photo_second');
-            $table->string('photo_third');
+            $table->string('image');
             $table->integer('stock');
             $table->foreignIdFor(Categorie::class);
-            $table->foreignIdFor(Fournisseur::class);
             $table->timestamps();
         });
     }

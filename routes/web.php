@@ -53,7 +53,6 @@ Route::get('admin/produit/detail/{id}',[ProduitController::class,'details_produi
 Route::post('admin/produit/update/',[ProduitController::class,'update_produit'])->name('update.produit');
 Route::post('admin/rechercher_produit/liste',[ProduitController::class,'rechercher_produit'])->name('rechercher.produit');
 Route::get('admin/produit/delete/{id}',[ProduitController::class,'delete_produits'])->name('delete.produit');
-Route::post('admin/ajout-image',[ProduitController::class,'ajouter_image_traitement'])->name('ajouter.image');
 // Commandes
 
 Route::get('admin/commande',[CommandeController::class,'liste_commande'])->name('listes.commande');
