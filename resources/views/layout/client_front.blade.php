@@ -27,7 +27,6 @@
 			<div class="row fullscreen align-items-center justify-content-start">
 				<div class="col-lg-12">
 					<div class="active-banner-slider owl-carousel">
-						<!-- single-slide -->
 						<div class="row single-slide align-items-center d-flex">
 							<div class="col-lg-5 col-md-6">
 								<div class="banner-content">
@@ -54,13 +53,13 @@
 										dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
 									<div class="add-bag d-flex align-items-center">
 										<a class="add-btn" href=""><span class="lnr lnr-cross"></span></a>
-										<span class="add-text text-uppercase">Add to Bag</span>
+										<span class="add-text text-uppercase">En savoir+</span>
 									</div>
 								</div>
 							</div>
 							<div class="col-lg-7">
 								<div class="banner-img">
-									<img class="img-fluid" src="{{asset('/client/img/banner/banner-img.png')}}" alt="">
+									<img class="img-fluid" src="{{asset('/client/img/banner/banner.jpg')}}" alt="">
 								</div>
 							</div>
 						</div>
@@ -151,7 +150,7 @@
 						<div class="col-lg-4 col-md-4">
 							<div class="single-deal">
 								<div class="overlay"></div>
-								<img class="img-fluid w-100" src="img/category/c3.jpg" alt="">
+								<img class="img-fluid w-100" src="{{asset('/client/img/category/c3.jpg')}}" alt="">
 								<a href="img/category/c3.jpg" class="img-pop-up" target="_blank">
 									<div class="deal-details">
 										<h6 class="deal-title">Product for Couple</h6>
@@ -162,8 +161,8 @@
 						<div class="col-lg-8 col-md-8">
 							<div class="single-deal">
 								<div class="overlay"></div>
-								<img class="img-fluid w-100" src="img/category/c4.jpg" alt="">
-								<a href="img/category/c4.jpg" class="img-pop-up" target="_blank">
+								<img class="img-fluid w-100" src="{{asset('/client/img/category/c4.jpg')}}" alt="">
+								<a href="{{asset('/client/img/category/c4.jpg')}}" class="img-pop-up" target="_blank">
 									<div class="deal-details">
 										<h6 class="deal-title">Sneaker for Sports</h6>
 									</div>
@@ -175,8 +174,8 @@
 				<div class="col-lg-4 col-md-6">
 					<div class="single-deal">
 						<div class="overlay"></div>
-						<img class="img-fluid w-100" src="img/category/c5.jpg" alt="">
-						<a href="img/category/c5.jpg" class="img-pop-up" target="_blank">
+						<img class="img-fluid w-100" src="{{asset('/client/img/category/c5.jpg')}}" alt="">
+						<a href="{{asset('/client/img/category/c5.jpg')}}" class="img-pop-up" target="_blank">
 							<div class="deal-details">
 								<h6 class="deal-title">Sneaker for Sports</h6>
 							</div>
@@ -197,9 +196,7 @@
 					<div class="col-lg-6 text-center">
 						<div class="section-title">
 							<h1>Listes Produits</h1>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-								dolore
-								magna aliqua.</p>
+
 						</div>
 					</div>
 				</div>
@@ -219,7 +216,7 @@
 
 									<a href="" class="social-info">
 										<span class="ti-bag"></span>
-										<p class="hover-text">add to bag</p>
+										<p class="hover-text">+Panier</p>
 									</a>
 
 									<a href="{{route('product.details',['id'=>$product->id])}}" class="social-info">
@@ -241,10 +238,8 @@
 				<div class="row justify-content-center">
 					<div class="col-lg-6 text-center">
 						<div class="section-title">
-							<h1>Coming Products</h1>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-								dolore
-								magna aliqua.</p>
+							<h1>Listes des Produits</h1>
+
 						</div>
 					</div>
 				</div>
@@ -266,19 +261,12 @@
 
 									<a href="" class="social-info">
 										<span class="ti-bag"></span>
-										<p class="hover-text">add to bag</p>
+										<p class="hover-text">+Panier</p>
 									</a>
-									<a href="" class="social-info">
-										<span class="lnr lnr-heart"></span>
-										<p class="hover-text">Wishlist</p>
-									</a>
-									<a href="" class="social-info">
-										<span class="lnr lnr-sync"></span>
-										<p class="hover-text">compare</p>
-									</a>
+
 									<a href="" class="social-info">
 										<span class="lnr lnr-move"></span>
-										<p class="hover-text">view more</p>
+										<p class="hover-text">Details</p>
 									</a>
 								</div>
 							</div>
@@ -364,10 +352,10 @@
 		<div class="container">
 			<div class="row">
 				<a class="col single-img" href="#">
-					<img class="img-fluid d-block mx-auto" src="img/brand/1.png" alt="">
+					<img class="img-fluid d-block mx-auto" src="{{asset('img/brand/1.png')}}" alt="">
 				</a>
 				<a class="col single-img" href="#">
-					<img class="img-fluid d-block mx-auto" src="img/brand/2.png" alt="">
+					<img class="img-fluid d-block mx-auto" src="{{asset('/client/img/brand/2.png')}}" alt="">
 				</a>
 				<a class="col single-img" href="#">
 					<img class="img-fluid d-block mx-auto" src="img/brand/3.png" alt="">
@@ -418,9 +406,7 @@
 										<input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">
 									</div>
 
-									<!-- <div class="col-lg-4 col-md-4">
-												<button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
-											</div>  -->
+
 								</div>
 								<div class="info"></div>
 							</form>

@@ -11,9 +11,7 @@
             @include('clients.pages.navbar')
         </div>
     </header>
-    <!-- End Header Area -->
-
-    <!-- Start Banner Area -->
+ 
     <section class="banner-area organic-breadcrumb">
         <div class="container">
             <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
@@ -81,39 +79,5 @@
         </div>
     </footer>
 
-    <!-- Include your JavaScript at the end of the body -->
-    <script>
-        function updateQuantity(produitId) {
-            var inputElement = document.getElementById('quantite_' + produitId);
-            if (inputElement) {
-                var nouvelleQuantite = inputElement.value;
-                var csrfToken = document.getElementById('csrf_token').value;
-
-                fetch('{{ route('client.update.cart') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify({
-                        id: produitId,
-                        qte: nouvelleQuantite
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.messages);
-                    // Gérer la réponse du serveur ici
-                })
-                .catch(error => {
-                    console.error('Erreur lors de la requête:', error);
-                });
-            } else {
-                console.error('L\'élément avec l\'ID "quantite_' + produitId + '" est introuvable.');
-            }
-        }
-    </script>
-    <input type="hidden" id="csrf_token" value="{{ csrf_token() }}">
 </body>
 </html>
