@@ -53,6 +53,8 @@ Route::get('admin/produit/detail/{id}',[ProduitController::class,'details_produi
 Route::post('admin/produit/update/',[ProduitController::class,'update_produit'])->name('update.produit');
 Route::post('admin/rechercher_produit/liste',[ProduitController::class,'rechercher_produit'])->name('rechercher.produit');
 Route::get('admin/produit/delete/{id}',[ProduitController::class,'delete_produits'])->name('delete.produit');
+Route::get('admin/store',[ProduitController::class,'addProduct'])->name('add.produit');
+
 // Commandes
 
 Route::get('admin/commande',[CommandeController::class,'liste_commande'])->name('listes.commande');
@@ -102,7 +104,7 @@ Route::post('/client/update-product',[ClientController::class,'update_cart'])->n
 
 
 // POST
-Route::post('/client/findProductByNameOrPrice',[ClientController::class,'findProduct'])->name('client.findProduct');
+Route::get('/client/findProductByNameOrPrice',[ClientController::class,'findProduct'])->name('client.findProduct');
 
 Route::post('/client/client_auth',[ClientController::class,'login_client'])->name('client.login');
 Route::post('/add_product_to_panier/panier',[ClientController::class,'add_product_panier'])->name('product.panier');

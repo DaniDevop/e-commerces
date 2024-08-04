@@ -63,7 +63,7 @@
 				<!-- Start Filter Bar -->
 				<div class="filter-bar d-flex flex-wrap align-items-center">
 					<div class="sorting">
-						<form action="{{route('client.findProduct')}}" method="POST">
+						<form action="{{route('client.findProduct')}}" method="GET">
 							@csrf
 					<input type="text" name="search" placeholder="Recherche...">
 						  <button>Valider</button>

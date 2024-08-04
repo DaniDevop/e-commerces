@@ -72,7 +72,7 @@
                             @endforeach
                             @else
 
-                            <h1>Le Panier est vide</h1>
+                            <h1>Le Panier est vide</h1>     
 
                             @endif
 

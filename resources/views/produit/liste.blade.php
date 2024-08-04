@@ -72,68 +72,14 @@
             </div>
 
 
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <a href="{{route('add.produit')}}">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Ajouter Produit
                 </button>
-
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-
-                    <form action="{{route('ajouter.produit')}}" method="POST" class="form-group" enctype="multipart/form-data">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="designation" class="form-label">Code</label>
-                            <input type="text" class="form-control" id="designation" value="{{$codeProduit}}"  disabled>
-                            <input type="hidden" class="form-control" id="designation" value="{{$codeProduit}}" name="code" >
-
-                            </div>
-                            <div class="mb-3">
-                            <label for="designation" class="form-label">designation</label>
-                            <input type="text" class="form-control" id="designation" name="designation" placeholder="veuillez mettre votre designation">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="prix" class="form-label">prix</label>
-                                <input type="number" min="1" class="form-control" id="prix" name="prix" placeholder="veuillez mettre votre prix">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="stock" class="form-label">stock</label>
-                                <input type="number" min="1" class="form-control" id="stock" name="stock" placeholder="veuillez mettre votre stock">
-                            </div>
-
-                              <div class="mb-3">
-                                <label for="stock" class="form-label">Image</label>
-                                <input type="file" min="1" class="form-control" id="stock" name="image">
-                            </div>
+            </a>
 
 
 
-                            <div class="mb-3">
-                                <label for="email" class="form-label">categorie</label>
-                                <select name="categorie_id" id="" class="form-select">
-                                @foreach ($categorieAll as $cat )
-                                    <option value="{{$cat->id}}">{{$cat->categorie}}</option> <!-- ici c'est la jointure on le gere au niveau de model-->
-                                    @endforeach
-                                </select>
-
-                            </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                            <button type="submit" class="btn btn-primary">Valider</button>
-                        </div>
-                    </form>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
 
             @include('partials.footer')
             <!-- Footer End -->

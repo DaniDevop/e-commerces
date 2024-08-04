@@ -43,7 +43,7 @@ class AdminControllers extends Controller
         ->select('commandes.*','clients.nom')
         ->orderByDesc('id')
         ->paginate(5)
-        
+
         ;
 
         return view('index',compact('commandes','sommeFacture','produitCount','fournisseurCount','commandesCount'));
@@ -67,16 +67,16 @@ class AdminControllers extends Controller
         if(!Auth::attempt($credentials) ){
            toastr()->error("Informations introuvable ou User inexistant");
            return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'The provided credentials do not match our records.',t
         ])->onlyInput('name');
 
         }
-       
+
         return redirect()->route('home');
     }
 
     public function create_user(Request $request){
-        
+
         $data = $request->validate([
             'name' => 'required',
             'email' => 'nullable|email',
@@ -85,14 +85,14 @@ class AdminControllers extends Controller
             'confirm_password' => 'required|min:5|same:password', // Ensure confirm_password matches password
         ]);
         $userExist = User::where('email',$request->email)->orWhere('tel',$request->tel)->first();
-        
+
         if($userExist){
             toastr()->error("Téléqhone ou email déjà existant dans la base de données");
             return back();
         }
-    
+
         $image = "";
-    
+
         $user = new User();
         $user->name = $data['name'];
         $user->email = $data['email'] ?: "";
@@ -102,16 +102,16 @@ class AdminControllers extends Controller
         if ($request->hasFile('profile')) {
             $image = $request->file('profile')->store('image', 'public');
         }
-    
+
         $user->profile = $image;
         $user->password = Hash::make($data['password']);
-    
+
         $user->save();
-    
+
         toastr()->success("Compte créé avec succès");
         return back();
     }
-    
+
     public function listes_users(){
         $users=User::paginate(5);
         return view("listes_users",compact('users'));
@@ -133,7 +133,7 @@ class AdminControllers extends Controller
             'profile' => 'nullable|image|mimes:jpeg,png,jpg|max:5048',
             'id' => 'required'
         ]);
-    
+
         $user = User::find($request->id);
         $user->name = $data['name'];
         $user->email = $data['email'];
@@ -143,14 +143,14 @@ class AdminControllers extends Controller
         if ($request->hasFile('profile')) {
             // Delete the old profile image
             Storage::disk('public')->delete($user->profile);
-    
+
             // Store the new profile image
             $profilePath = $request->file('profile')->store('images', 'public');
             $user->profile = $profilePath;
         }
-    
+
         $user->save();
-    
+
         toastr()->info("Informations modifiées avec succès");
         return back();
     }
@@ -163,7 +163,7 @@ class AdminControllers extends Controller
             'confirm_password' => 'required',
             'id' => 'required'
         ]);
-    
+
         $user = User::find($request->id);
         $user->name = $data['name'];
         $user->email = $data['email'];
@@ -171,14 +171,14 @@ class AdminControllers extends Controller
             toastr()->warning("Les mots de passes sont diffirents");
             return back();
         }
-    
+
         if (!Hash::check($request->new_passord,$user->password)) {
             toastr()->warning("Le mot de passes est incorrect");
             return back();
         }
-    
+
         $user->password =Hash::make($request->new_passord);
-        $user->update(); 
+        $user->update();
         toastr()->info("Informations modifiées avec succès");
         return back();
     }
@@ -223,5 +223,5 @@ class AdminControllers extends Controller
 
 
 
-   
+
 }

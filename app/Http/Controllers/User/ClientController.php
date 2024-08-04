@@ -436,9 +436,8 @@ public function valide_commande_login( Request $request){
     return view('clients.product',[
           'categorieAll'=>$categorieAll,
           'produitAll'=>$produitAll
-
         ]);
- }
+ }  
 
  public function update_cart(Request $request){
 

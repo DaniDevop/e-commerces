@@ -147,4 +147,19 @@ class ProduitController extends Controller
     }
 
 
+
+    public function addProduct(){
+
+        $categorieAll=Categorie::all();
+        $numberProd=Produit::count();//
+        $caracteres_aleatoires = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+        $codeProduit = 'PRD°' . substr(str_shuffle($caracteres_aleatoires), 0, 5).$numberProd;
+        return view("produit.store",[
+            'categorieAll'=>$categorieAll,
+            'codeProduit'=>$codeProduit
+        ]);
+    }
+
+
 }
