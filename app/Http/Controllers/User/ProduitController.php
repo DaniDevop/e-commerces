@@ -15,13 +15,10 @@ use Intervention\Image\ImageManager;
 class ProduitController extends Controller
 {
     public function liste_produit(){
-        $produits=DB::table('produits')
-        ->leftJoin('categories', 'categories.id', '=', 'produits.categorie_id')
-        ->select('produits.*','categories.categorie')
-        ->orderByDesc('id')
-        ->paginate(5)
+        $produits=Produit::with('categorie')->paginate(10);
 
-        ;
+
+
         $categorieAll=Categorie::all();
         $numberProd=Produit::count();//
         $caracteres_aleatoires = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -38,7 +35,6 @@ class ProduitController extends Controller
 
         $produit = new Produit();
         $produit->designation = $request->designation;
-        $produit->code = $request->code;
         $produit->prix = $request->prix;
         $produit->stock = $request->stock;
         $produit->categorie_id = $request->categorie_id;
@@ -114,15 +110,14 @@ class ProduitController extends Controller
 
         $produits = DB::table('produits')
         ->join('categories', 'produits.categorie_id', '=', 'categories.id')
-        ->join('fournisseurs', 'produits.fournisseur_id', '=', 'fournisseurs.id')
         ->where(function($query) use ($searchTerm) {
             $query->where('produits.id', 'LIKE', "%$searchTerm%")
-                ->orWhere('produits.code', 'LIKE', "%$searchTerm%")
+                
                 ->orWhere('produits.designation', 'LIKE', "%$searchTerm%")
                 ->orWhere('produits.prix', 'LIKE', "%$searchTerm%")
                 ->orWhere('produits.stock', 'LIKE', "%$searchTerm%")
                 ->orWhere('categories.categorie', 'LIKE', "%$searchTerm%")
-                ->orWhere('fournisseurs.nom', 'LIKE', "%$searchTerm%");
+                ;
         })
         ->select('produits.*','fournisseurs.nom','categories.categorie')
         ->paginate(5);

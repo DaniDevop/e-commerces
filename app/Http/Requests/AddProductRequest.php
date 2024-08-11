@@ -26,7 +26,6 @@ class AddProductRequest extends FormRequest
             'prix'=>'required',
             'stock'=>'required',
             'categorie_id'=>'required|exists:categories,id',//ici cest la jointure
-            'code'=>'required',
             'image'=>'required|image|mimes:png,jpg,jpeg|max:2048',//ici cest la jointure
         ];
     }

@@ -46,7 +46,7 @@ class AdminControllers extends Controller
 
         ;
 
-        return view('index',compact('commandes','sommeFacture','produitCount','fournisseurCount','commandesCount'));
+        return view('admin.index',compact('commandes','sommeFacture','produitCount','fournisseurCount','commandesCount'));
     }
     public function profile_update($id){
         $user=User::find($id);
@@ -67,7 +67,7 @@ class AdminControllers extends Controller
         if(!Auth::attempt($credentials) ){
            toastr()->error("Informations introuvable ou User inexistant");
            return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',t
+            'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('name');
 
         }

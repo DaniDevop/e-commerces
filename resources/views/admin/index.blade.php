@@ -2,7 +2,6 @@
 <html lang="en">
 
 @include('admin.pages.head')
-
 <body>
 
 	<header>
@@ -24,7 +23,7 @@
 							<ul>
 								<li><a href="#">My Account</a></li>
 								<li><a href="#">Settings</a></li>
-								<li><a href="#">Logout</a></li>
+								<li><a href="{{route('logout.compte')}}">Logout</a></li>
 							</ul>
 						</div>
 					</div>
@@ -36,47 +35,73 @@
 	<main>
 
 		<div class="main-content">
-            @include('admin.pages.sidebar')
-
-			<div class="content">
-				<h3>Catogorie</h3>
+			@include('admin.pages.sidebar')
+			<div class="content dashboard">
+				<h3>Dashboard</h3>
 				<div class="content-data">
-					<div class="content-form">
-						<form method="POST" action="{{route('update.categorie')}}">
-                            @csrf
-							<h4>Modifier</h4>
-							<div class="form-inline">
-								<div class="form-group">
-									<label>Category Name</label>
-									<input type="text" name="categorie" value="{{ $cate->categorie}}">
-                                    <input type="hidden" name="id" value="{{ $cate->id}}">
-								</div>
-
-							</div>
-							<div class="form-group">
-								<label></label>
-								<input type="submit" name="addCategory" value="Modification">
-							</div>
-						</form>
-					</div>
 					<div class="content-detail">
-						<h4>AListes des catégories</h4>
+						<h4>Low Stock Report</h4>
 						<table>
 							<thead>
 								<tr>
-                                    <th>Numéro</th>
+									<th>Product</th>
+									<th>Price</th>
 									<th>Category</th>
-									<th>Date</th>
-									<th>Date-Mise-jour</th>
+									<th>Qty</th>
 								</tr>
 							</thead>
 							<tbody>
-
 								<tr>
-                                    <td> {{$cate->id}} </td>
-									<td> {{$cate->categorie}} </td>
-									<td>{{$cate->created_at}} </td>
-									<td>{{$cate->updated_at}}</td>
+									<td>Blue Jeans</td>
+									<td>1500</td>
+									<td>Pants</td>
+									<td>2</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="content-detail">
+						<h4>Recent Order</h4>
+						<table>
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Order Ref#</th>
+									<th>User</th>
+									<th>Amount</th>
+									<th>View</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>11-05-2020</td>
+									<td>15895452</td>
+									<td>Kamran</td>
+									<td>1500</td>
+									<td>View</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="content-detail">
+						<h4>Completed Order</h4>
+						<table>
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Order Ref#</th>
+									<th>User</th>
+									<th>Amount</th>
+									<th>View</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>11-05-2020</td>
+									<td>15895452</td>
+									<td>Kamran</td>
+									<td>1500</td>
+									<td>View</td>
 								</tr>
 							</tbody>
 						</table>

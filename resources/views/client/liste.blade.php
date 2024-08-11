@@ -1,91 +1,88 @@
-<!-- partie liste -->
 <!DOCTYPE html>
 <html lang="en">
 
-@include('partials.header')
+@include('admin.pages.head')
 
 <body>
-    <div class="container-fluid position-relative d-flex p-0">
-        <!-- Spinner Start -->
-        <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
-        <!-- Spinner End -->
 
-        <!-- Sidebar Start -->
-        @include('partials.sidebar')
-        <!-- Sidebar End -->
+	<header>
+		<div class="container">
+			<div class="brand">
+				<div class="logo">
+					<a href="{{route('home')}}">
+						<img src="../img/icons/online_shopping.png">
+						<div class="logo-text">
+							<p class="big-logo">Ecommerce</p>
+							<p class="small-logo">online shop</p>
+						</div>
+					</a>
+				</div> <!-- logo -->
+				<div class="shop-icon">
+					<div class="dropdown">
+						<img src="../img/icons/account.png">
+						<div class="dropdown-menu">
+							<ul>
+								<li><a href="#">My Account</a></li>
+								<li><a href="#">Settings</a></li>
+								<li><a href="{{route('logout.compte')}}">Logout</a></li>
+							</ul>
+						</div>
+					</div>
+				</div> <!-- shop icons -->
+			</div> <!-- brand -->
+		</div> <!-- container -->
+	</header> <!-- header -->
 
-        <!-- Content Start -->
-        <div class="content">
-            <!-- Navbar Start -->
-            @include('partials.navbar')
-            <!-- Navbar End -->
+	<main>
 
-            <!-- Sale & Revenue Start -->
-            <div class="col-12">
-                <div class="bg-secondary rounded h-100 p-4">
-                    <h6 class="mb-4">Listes des clients</h6>
-                    <form action="{{route('rechercher.client')}}" method="POST">
-                    @csrf
-                      <input type="text" name="search" placeholder="recherche..." required>
-                      <button type="submit" class="btn btn-success">Valider</button>
-                    </form>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Numero</th>
-                                    <th scope="col">Nom</th>
-                                    <th scope="col">Tel</th>
-                                    <th scope="col">email</th>
-                                    <th scope="col">adresse</th>
-                                    <th scope="col">Details</th>
-                                    <th scope="col">Supprimer</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @foreach ($clients as $client) 
-                                    <tr>
-                                        <th scope="row">{{ $client->id}}</th>
-                                        <td>{{ $client->nom}}</td>
-                                        <td>{{ $client->tel}}</td>
-                                        <td>{{ $client->email}}</td>
-                                        <td>{{ $client->adresse}}</td>
+		<div class="main-content">
+            @include('admin.pages.sidebar')
 
-                                        <td><a href="{{route('details.client',['id'=>$client->id])}} " class="btn btn-dark"><i class="bi bi-eye-fill"></i></a></td>
+			<div class="content">
+				<h3>Order</h3>
+				<div class="content-detail">
+					<table>
+						<thead>
+							<tr>
+								<th>Date</th>
+								<th>Order Ref#</th>
+								<th>User</th>
+								<th>Amount</th>
+								<th>Payment Mode</th>
+								<th>Status</th>
+								<th>View</th>
+								<th>Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>11-05-2020</td>
+								<td>15895452</td>
+								<td>Kamran</td>
+								<td>1500</td>
+								<td>Cash On Delivery</td>
+								<td>Pending</td>
+								<td>View</td>
+								<td>Delete</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 
-                                        <td>Delete</td>
-                                    </tr>
-                             @endforeach
-                            </tbody>
-                        </table>
-                        {{$clients->links()}}
-                    </div>
-                </div>
-            </div>
+	</main> <!-- Main Area -->
 
+	<footer>
+		<div class="container">
+			<div class="footer-bar">
+				<div class="copyright-text">
+					<p>Copryright 2020 - All Rights Reserved</p>
+				</div>
+			</div> <!-- Footer Bar -->
+		</div>
+	</footer> <!-- Footer Area -->
 
-               <!-- partie ajouter fournisseur -->
-
-              
-
-
-
-
-            @include('partials.footer')
-            <!-- Footer End -->
-        </div>
-        <!-- Content End -->
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-    </div>
-
-    <!-- JavaScript Libraries -->
-    @include('partials.js')
 </body>
 
 </html>

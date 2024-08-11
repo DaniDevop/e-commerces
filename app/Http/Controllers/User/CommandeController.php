@@ -43,7 +43,7 @@ class CommandeController extends Controller
             toastr()->error("Informations indisponible !");
             return back();
         }
-       
+
         $commandes->status="Valider";
         $commandes->update();
         $factures=new Facture();
@@ -85,7 +85,7 @@ class CommandeController extends Controller
         ->select('commandes.*','clients.nom')
         ->paginate(5);
         return view("commande.liste",compact('commandes'));
- 
+
 
     }
 }

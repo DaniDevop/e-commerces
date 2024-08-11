@@ -38,7 +38,7 @@ Route::get('admin/categorie',[CategorieController::class,'listes_categorie'])->n
 Route::post('admin/ajout-categorie',[CategorieController::class,'ajouter_categorie_traitement'])->name('ajouter.categorie');
 Route::get('admin/categorie/detail/{id}',[CategorieController::class,'details_categorie'])->name('details.categorie');
 Route::post('admin/categorie/update/',[CategorieController::class,'update_categorie'])->name('update.categorie');
-Route::post('admin/categorie/recherche_cat/',[CategorieController::class,'rechercher_categorie'])->name('rechercher.categorie');
+Route::get('admin/categorie/recherche_cat/',[CategorieController::class,'rechercher_categorie'])->name('rechercher.categorie');
 Route::get('admin/categorie/delete/{id}',[CategorieController::class,'delete_categorie'])->name('delete.categorie');
 // Client Partie administrateur
 Route::get('admin/client',[ClientController::class,'listes_client'])->name('listes.client');
@@ -51,7 +51,7 @@ Route::get('admin/produit',[ProduitController::class,'liste_produit'])->name('li
 Route::post('admin/ajout-produit',[ProduitController::class,'ajouter_produit_traitement'])->name('ajouter.produit');
 Route::get('admin/produit/detail/{id}',[ProduitController::class,'details_produit'])->name('details.produit');
 Route::post('admin/produit/update/',[ProduitController::class,'update_produit'])->name('update.produit');
-Route::post('admin/rechercher_produit/liste',[ProduitController::class,'rechercher_produit'])->name('rechercher.produit');
+Route::get('admin/rechercher_produit/liste',[ProduitController::class,'rechercher_produit'])->name('rechercher.produit');
 Route::get('admin/produit/delete/{id}',[ProduitController::class,'delete_produits'])->name('delete.produit');
 Route::get('admin/store',[ProduitController::class,'addProduct'])->name('add.produit');
 

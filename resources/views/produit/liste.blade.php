@@ -1,105 +1,147 @@
-<!-- partie liste -->
 <!DOCTYPE html>
 <html lang="en">
 
-@include('partials.header')
+@include('admin.pages.head')
 
 <body>
-    <div class="container-fluid position-relative d-flex p-0">
-        <!-- Spinner Start -->
-        <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
-        <!-- Spinner End -->
 
-        <!-- Sidebar Start -->
-        @include('partials.sidebar')
-        <!-- Sidebar End -->
+	<header>
+		<div class="container">
+			<div class="brand">
+				<div class="logo">
+					<a href="{{route('home')}}">
+						<img width="50" src="{{asset('client/img/logo1.png')}}">
+						<div class="logo-text">
+							<p class="big-logo">Ecommerce</p>
+							<p class="small-logo">online shop</p>
+						</div>
+					</a>
+				</div> <!-- logo -->
+				<div class="shop-icon">
+					<div class="dropdown">
+						<img src="../img/icons/account.png">
+						<div class="dropdown-menu">
+							<ul>
+								<li><a href="#">My Account</a></li>
+								<li><a href="#">Settings</a></li>
+								<li><a href="{{route('logout.compte')}}">Logout</a></li>
+							</ul>
+						</div>
+					</div>
+				</div> <!-- shop icons -->
+			</div> <!-- brand -->
+		</div> <!-- container -->
+	</header> <!-- header -->
 
-        <!-- Content Start -->
-        <div class="content">
-            <!-- Navbar Start -->
-            @include('partials.navbar')
-            <!-- Navbar End -->
+	<main>
 
-            <!-- Sale & Revenue Start -->
-            <div class="col-12">
-                <div class="bg-secondary rounded h-100 p-4">
-                    <h6 class="mb-4">Listes des produits</h6>
+		<div class="main-content">
+            @include('admin.pages.sidebar')
 
-                    <form action="{{route('rechercher.produit')}}" method="POST">
-                    @csrf
-                      <input type="text" name="search" placeholder="recherche..." required>
-                      <button type="submit" class="btn btn-success">Valider</button>
-                    </form>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Numero</th>
-                                    <th scope="col">code</th>
-                                    <th scope="col">Designation</th>
-                                    <th scope="col">Prix</th>
-                                    <th scope="col">stock</th>
-                                    <th scope="col">Categorie</th>
-                                    <th scope="col">Details</th>
-                                    <th scope="col">Supprimer</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                   @foreach($produits as $prod)
-                                    <tr>
-                                        <th scope="row">{{$prod->id}}</th>
-                                        <td>{{$prod->code}}</td>
-                                        <td>{{$prod->designation}}</td>
-                                        <td>{{$prod->prix}}</td>
-                                        <td>{{$prod->stock}}</td>
-                                        <td>{{$prod->categorie}}</td>
+			<div class="content">
+				<h3>Product</h3>
+				<div class="content-data">
+					<div class="content-form">
+						<form action="{{route('ajouter.produit')}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+							<h4>Ajouter-un-produit</h4>
+							<div class="form-inline">
+								<div class="form-group">
+									<label>Product Name</label>
+									<input type="text" name="designation" value="{{old('designation')}}">
+								</div>
+								<div class="form-group">
+									<label>Price</label>
+									<input type="number" name="prix" value="{{old('prix')}}" min="1">
+								</div>
+							</div>
+							<div class="form-group">
+								<label>Stock</label>
+								<input type="number" name="stock" value="{{old('stock')}}"  min="1">
+							</div>
 
-                                        <td><a href="{{route('details.produit',['id'=>$prod->id])}} " class="btn btn-dark"><i class="bi bi-eye-fill"></i></a></td>
+							<div class="form-inline">
+								<div class="form-group">
+									<label>Category</label>
+									<select name="categorie_id">
+										<option>---Select a Category---</option>
+                                        @foreach ($categorieAll as $categorie )
+										<option value="{{$categorie->id}}">{{$categorie->categorie}}</option>
+                                        @endforeach
+									</select>
+								</div>
+								<div class="form-group">
+									<label>Images</label>
+									<input type="file" name="image" >
+								</div>
+							</div>
+							<div class="form-group">
+								<label></label>
+								<input type="submit" name="addProduct" value="Ajouter un produit">
+							</div>
+						</form>
+					</div>
+					<div class="content-detail">
+                        <form action="{{route('rechercher.produit')}}" method="GET">
+                            @csrf
+                            <div class="form-group">
+                                <label>Rechercher une produit</label>
+                                <input type="text" name="search" required>
+                                <button>Chercher...</button>
+                            </div>
+                        </form>
+						<h4>Listes des produits</h4>
+						<table>
+							<thead>
+								<tr>
+									<th>Product</th>
+                                    <th>Designation</th>
+									<th>Price</th>
+									<th>Category</th>
 
-                                        <td>   <a hredf="#" onclick="confirmDelete('{{ route('delete.produit', ['id' => $prod->id]) }}')" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a> </td>
-                                    </tr>
-                                    @endforeach
+                                    <th>Stock</th>
+									<th>Edit</th>
+									<th>Delete</th>
+								</tr>
+							</thead>
+							<tbody>
+                                @foreach ($produits as $product )
 
-                            </tbody>
-                        </table>
-                        {{$produits->links()}}
-                    </div>
-                </div>
-            </div>
+								<tr>
+                                    <th scope="row"  class="zoom"> <img src="{{asset('uploads/store/'.$product->image)}}" alt=""  width="30">  </th>
+									<td>  {{$product->designation}} </td>
+									<td>  {{$product->prix}} </td>
+									<td>  {{$product->categorie->categorie}} </td>
+									<td>  {{$product->stock}} </td>
+									<td><a href="{{route('details.produit',['id'=>$product->id])}}">Modifier</a> </td>
+									<td>Delete</td>
+								</tr>
+                                @endforeach
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+                {{$produits->links()}}
+			</div>
 
 
-            <a href="{{route('add.produit')}}">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Ajouter Produit
-                </button>
-            </a>
+		</div>
 
 
 
+	</main> <!-- Main Area -->
 
-            @include('partials.footer')
-            <!-- Footer End -->
-        </div>
-        <!-- Content End -->
+	<footer>
+		<div class="container">
+			<div class="footer-bar">
+				<div class="copyright-text">
+					<p>Copryright 2020 - All Rights Reserved</p>
+				</div>
+			</div> <!-- Footer Bar -->
+		</div>
+	</footer> <!-- Footer Area -->
 
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-    </div>
-
-    <!-- JavaScript Libraries -->
-    @include('partials.js')
-
-     <script>
-    function confirmDelete(deleteUrl) {
-        if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
-            window.location.href = deleteUrl;
-        }
-    }
-</script>
 </body>
 
 </html>

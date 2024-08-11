@@ -13,21 +13,25 @@ class Produit extends Model
     use HasFactory;
 
     protected $fillable=[
-        'stock'
+        'stock',
+        'prix',
+        'image',
+        'id',
+        'code'
     ];
 
     //ici le produit est le dominer d'ou les dominants fournisseur et categorie ont porté BelonTo
     public function fournisseur():BelongsTo{//dominant
-        return $this->belongsTo(Fournisseur::class); 
+        return $this->belongsTo(Fournisseur::class);
 
     }
-    public function categorie():BelongsTo{//dominant    
-        return $this->belongsTo(Categorie::class); 
+    public function categorie():BelongsTo{//dominant
+        return $this->belongsTo(Categorie::class);
 
     }
-    public function detail_commande():HasMany{//dominant    
-        return $this->hasMany(detail_commande::class); 
+    public function detail_commande():HasMany{//dominant
+        return $this->hasMany(detail_commande::class);
 
     }
-    
+
 }
