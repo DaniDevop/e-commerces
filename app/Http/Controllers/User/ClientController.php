@@ -76,6 +76,21 @@ class ClientController extends Controller
 
      }
 
+
+     public function listes_produits()
+     {
+         $panier = session()->get('cart',[]);
+ 
+         $produitAll=Produit::with('categorie')->paginate(10);
+         $count=$this->count_tab($panier);
+         $client= session()->get('client');
+ 
+         $categorieAll=Categorie::limit(9)->get();
+         $categorie=Categorie::all();
+         // session()->flush();
+         return view('clients.product',compact('categorieAll','categorie','client','panier','produitAll','count'));
+     }
+
      public function update_client(Request  $request){//traitement
         $request->validate([
             'nom'=>'required',

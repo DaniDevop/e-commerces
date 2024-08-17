@@ -25,34 +25,11 @@ class AcceuilController extends Controller
         // session()->flush();
         return view('clients.index',compact('categorieAll','client','panier','produitAll','count'));
     }
-    public function produit_by_categorie(Request $request){
-        $produitAll=DB::table('produits')
-        ->join('categories','categories.id','=','produits.categorie_id')
-        ->where('categories.id',$request->id)
-        ->select('categories.categorie','produits.*')->get();
-        $panier = session()->get('panier',[]);
-
-        $count=$this->count_tab($panier);
-        $client= session()->get('client');
-        $categorieAll=Categorie::all();
-        return view('layout.client_front',compact('categorieAll','client','panier','produitAll','count'));
-
-    }
     public function count_tab($array){
         return count($array);
     }
 
 
-    public function liste_index()
-    {
-        $categorieAll=Categorie::all();
-        $produitAll=Produit::paginate(4);
-        return view('clients.product',[
-          'categorieAll'=>$categorieAll,
-          'produitAll'=>$produitAll
-
-        ]);
-    }
 
     public function details_product($id){
         $produit=Produit::find($id);
@@ -69,12 +46,8 @@ class AcceuilController extends Controller
 
         $categorieAll=Categorie::all();
         
-
-        $produitCategorie=DB::table('produits')
-        ->join('categories','categories.id','=','produits.categorie_id')
-        ->where('categories.categorie',$produit->categorie->categorie)//si la table categories.son atribu(categirie) puis leproduit associe au categorie
-       ->select('produits.*','categories.categorie')->get();
-        return view("clients.details-product",compact('panier','count','produit','produitCategorie','categorieAll'));
+ 
+        return view("clients.details-product",compact('panier','count','produit','categorieAll'));
     }
 
 

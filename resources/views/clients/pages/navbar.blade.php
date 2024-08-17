@@ -27,7 +27,7 @@
 
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{route('show.panier.client')}}">
+                                <a class="nav-link" href="{{route('client.produitAll')}}">
                                      Listes des produits 
                                 </a>
                             </li>

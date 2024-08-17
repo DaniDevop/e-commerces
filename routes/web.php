@@ -86,15 +86,14 @@ Route::get('admin/dashboard',[AdminControllers::class,'home'])->name('home.admin
 
 
 
-Route::get('/client/listes_produit',[AcceuilController::class,'liste_index'])->name('listes.index');
 Route::get('/details_product/{id}',[AcceuilController::class,'details_product'])->name('product.details');
-Route::get('/productByCategorie',[AcceuilController::class,'produit_by_categorie'])->name('categorie.produit.listes');
 
 //--------------------- Partie de traitement du client--------------------------
 // GET
 Route::get('/client/liste-byCategorie/{id}',[ClientController::class,'findProductByCategorie'])->name('client.findByProductCategorie');
 Route::get('/client/supprimer-produit/{id}',[ClientController::class,'remove'])->name('client.remove.produit');
 Route::get('/client/produitByCategorie/{id}',[ClientController::class,'productByCategorie'])->name('produitByCategorie');
+Route::get('/client/liste-produitAll',[ClientController::class,'listes_produits'])->name('client.produitAll');
 
 Route::get('/client_register',[ClientController::class,'register_client'])->name('register.client');
 Route::get('/client/panier_client/',[ClientController::class,'showPanier'])->name('show.panier.client');
