@@ -17,8 +17,17 @@ class ClientController extends Controller
 {
 
 
-    public function __construct(){
+    public function home()
+    {
+        $panier = session()->get('cart',[]);
 
+        $produitAll=Produit::with('categorie')->paginate(10);
+        $count=$this->count_tab($panier);
+        $client= session()->get('client');
+
+        $categorieAll=Categorie::limit(9)->get();
+        // session()->flush();
+        return view('clients.index',compact('categorieAll','client','panier','produitAll','count'));
     }
     public function listes_client(){
         $clients=DB::table("clients")
@@ -162,73 +171,52 @@ class ClientController extends Controller
 
 
     }
-
-    public function addCart(Request $request){
-
-        $id=$request->input('id');
+    public function addCart(Request $request) {
+        $id = $request->input('id');
         $produit = Produit::findOrFail($id);
-
         $cart = session()->get('cart', []);
-
-
-        if(isset($cart[$id])) {
-            if($cart[$id]['qte_commande'] > $produit->stock ){
-
-                return redirect()->back()->with('warning', 'La quantité demandé n est pas disponible');
+    
+        if (isset($cart[$id])) {
+            if ($cart[$id]['qte_commande'] >= $produit->stock) {
+                return response()->json(['warning' => 'La quantité demandée n\'est pas disponible'], 400);
             }
             $cart[$id]['qte_commande']++;
         } else {
             $cart[$id] = [
-              'produit_id'=>$produit->id,
-            'designation'=>$produit->designation,
-            'prix'=>$produit->prix,
-            'qte_commande'=>1,
-            'profile'=>$produit->photo_first
+                'produit_id' => $produit->id,
+                'designation' => $produit->designation,
+                'prix' => $produit->prix,
+                'qte_commande' => 1,
+                'profile' => $produit->image
             ];
         }
+    
         session()->put('cart', $cart);
-        return redirect()->back()->with('success', 'Product ajouté avec success !!');
-
+    
+        return response()->json(['success' => 'Produit ajouté avec succès!']);
     }
+    
 
-    public function add_product_panier(Request $request)
-    {
-        // Recherche du produit par son ID
-        $produit = Produit::find($request->id);
+  
 
-        // Vérification si le produit existe
-        if (!$produit) {
-            return response()->json(['error' => 'Le produit n\'existe pas'], 404);
+
+
+    public function productByCategorie($id){
+        $categorie=Categorie::find($id);
+
+        if(!$categorie){
+            toastr()->error('La catégorie est inexistante');
         }
-        $panier=session()->get('panier',[]);
-        $produitExist=true;
-         foreach($panier as $prod){
-            if($prod['produit_id']==$produit->id){
-                $produitExist=false;
-                 break;
-            }
-         }
-         if(!$produitExist){
-            return response()->json(['error' => 'Le produit est déjà dans le panier'], 404);
 
-         }
+        $panier = session()->get('cart',[]);
 
-
-
-
-        $panier[]=[
-            'produit_id'=>$produit->id,
-            'designation'=>$produit->designation,
-            'prix'=>$produit->prix,
-            'qte_commande'=>1,
-            'profile'=>$produit->photo_first
-
-        ];
-        session()->put('panier',$panier);
+        $produitAll=Produit::where('categorie_id',$id)->paginate(10);
         $count=$this->count_tab($panier);
-         return response()->json(['count' => $count]);
+        $client= session()->get('client');
 
-
+        $categorieAll=Categorie::limit(9)->get();
+        // session()->flush();
+        return view('clients.index',compact('categorieAll','client','panier','produitAll','count'));
     }
 
     public function showPanier(){
@@ -242,9 +230,11 @@ class ClientController extends Controller
        $client= session()->get('client');
 
 
+   
+       $categorieAll=Categorie::all();
 
 
-         return view("clients.cart",compact('client','cart','sommeTotal'));
+         return view("clients.cart",compact('client','cart','sommeTotal','categorieAll'));
     }
 
     // Deconnection client
@@ -263,7 +253,9 @@ class ClientController extends Controller
     }
 
     public function register(){
-        return view('clients.register');
+
+        $categorieAll=Categorie::all();
+        return view('clients.register',compact('categorieAll'));
 
     }
 
@@ -391,6 +383,10 @@ public function valide_commande_login( Request $request){
     return back();
 
  }
+
+
+
+ 
 
 
  public function remove(Request $request)

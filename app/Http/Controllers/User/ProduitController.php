@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddProductRequest;
+use App\Http\Requests\UpdateProduitRequest;
 use Illuminate\Http\Request;
 use App\Models\User\Produit;
 use App\Models\User\Fournisseur;
@@ -15,9 +16,7 @@ use Intervention\Image\ImageManager;
 class ProduitController extends Controller
 {
     public function liste_produit(){
-        $produits=Produit::with('categorie')->paginate(10);
-
-
+        $produits=Produit::with('categorie')->orderBy('id','desc')->paginate(10);
 
         $categorieAll=Categorie::all();
         $numberProd=Produit::count();//
@@ -44,7 +43,7 @@ class ProduitController extends Controller
         $Imgmanager=new ImageManager(new Driver());
         $resizeImage=$Imgmanager->read('uploads/produit/'.$imageName);
         $resizeImage->resize(300,300);
-
+        $produit->code='';
         $resizeImage->save(public_path('uploads/store/'.$imageName));
         $produit->image=$imageName;
         $produit->save();
@@ -56,28 +55,20 @@ class ProduitController extends Controller
 
     public function details_produit($id){
 
-        $produit = Produit::where('id', $id)->first();
-        $fournisseurAll=Fournisseur::all();
+        $product = Produit::where('id', $id)->first();
         $categorieAll=Categorie::all();
 
-        if (!$produit) {
+        if (!$product) {
         return redirect('/produit')->with('error', "produit n'a pas été trouvé");
         }
 
-        return view('produit.detail', compact('produit','categorieAll','fournisseurAll'));
+        return view('produit.detail', compact('product','categorieAll'));
      }
 
 
 
-     public function update_produit(Request  $request){//traitement
-        $request->validate([
-            'designation'=>'required',//les names
-            'prix'=>'required',
-            'stock'=>'required',
-            'categorie_id'=>'required|exists:categories,id',//ici cest la jointure
-            'image'=>'nullable|image|mimes:png,jpg,jpeg|max:2048',//ici cest la jointure
-
-        ]);
+     public function update_produit(UpdateProduitRequest  $request){//traitement
+       
 
         $produit=produit::find($request->id);
         $produit->designation = $request->designation;//1 base de donner et 2 le name de formulaire
@@ -91,7 +82,6 @@ class ProduitController extends Controller
             $Imgmanager=new ImageManager(new Driver());
             $resizeImage=$Imgmanager->read('uploads/produit/'.$imageName);
             $resizeImage->resize(300,300);
-
             $resizeImage->save(public_path('uploads/store/'.$imageName));
             $produit->image=$imageName;
         }
@@ -108,26 +98,16 @@ class ProduitController extends Controller
     public function rechercher_produit(Request $request){
         $searchTerm = $request->search;
 
-        $produits = DB::table('produits')
-        ->join('categories', 'produits.categorie_id', '=', 'categories.id')
-        ->where(function($query) use ($searchTerm) {
-            $query->where('produits.id', 'LIKE', "%$searchTerm%")
-                
-                ->orWhere('produits.designation', 'LIKE', "%$searchTerm%")
-                ->orWhere('produits.prix', 'LIKE', "%$searchTerm%")
-                ->orWhere('produits.stock', 'LIKE', "%$searchTerm%")
-                ->orWhere('categories.categorie', 'LIKE', "%$searchTerm%")
-                ;
-        })
-        ->select('produits.*','fournisseurs.nom','categories.categorie')
-        ->paginate(5);
+       
+         $produits=Produit::where('produits.designation', 'LIKE', "%$searchTerm%")
+         ->orWhere('produits.prix', 'LIKE', "%$searchTerm%")
+         ->orWhere('produits.stock', 'LIKE', "%$searchTerm%")
+          ->paginate(5);;
 
-
-        $fournisseurAll=Fournisseur::all();
         $categorieAll=Categorie::all();
         $codeProduit=Produit::count();//
 
-        return view("produit.liste",compact('codeProduit','produits','fournisseurAll','categorieAll'));
+        return view("produit.liste",compact('codeProduit','produits','categorieAll'));
     }
 
     public function delete_produits($id){

@@ -13,12 +13,10 @@ class CommandeController extends Controller
 {
     public function liste_commande(){
 
-        $commandes=DB::table('commandes')
-        ->join('clients','commandes.client_id','=','clients.id')
-        ->select('commandes.*','clients.nom')
-        ->orderByDesc('id')
-        ->paginate(5);
-        return view("commande.liste",compact('commandes'));
+    
+
+        $commandesAll=Commande::with('client')->orderBy('id','desc')->paginate(10);
+        return view("commande.liste",compact('commandesAll'));
     }
 
 
@@ -29,11 +27,8 @@ class CommandeController extends Controller
             return back();
         }
 
-        $detail_commandes=detail_commande::where('commande_id',$commandes->id)->get();
-        $detail_commandes=DB::table('detail_commandes')
-        ->join('produits','produits.id','=','detail_commandes.produit_id')
-        ->join('commandes','commandes.id','=','detail_commandes.commande_id')
-        ->select('produits.designation','detail_commandes.*')->paginate(5);
+        $detail_commandes=detail_commande::where('commande_id',$commandes->id)->paginate(5);
+
         return view("commande.detail",compact('detail_commandes'));
     }
 

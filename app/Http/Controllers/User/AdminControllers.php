@@ -4,6 +4,7 @@ namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\User\Client;
 use App\Models\User\Commande;
 use App\Models\User\Fournisseur;
 use App\Models\User\Produit;
@@ -31,7 +32,9 @@ class AdminControllers extends Controller
 
     public function home(){
         $produitCount=Produit::count();
-        $fournisseurCount=Fournisseur::count();
+      
+
+        $clientCount=Client::count();
         $commandesCount=Commande::count();
         $sommeFacture = DB::select("SELECT SUM(produits.prix * detail_commandes.qte_commande) AS sommeFacture
         FROM produits, detail_commandes
@@ -46,16 +49,17 @@ class AdminControllers extends Controller
 
         ;
 
-        return view('admin.index',compact('commandes','sommeFacture','produitCount','fournisseurCount','commandesCount'));
+        return view('admin.index',compact('commandes','sommeFacture','produitCount','clientCount','commandesCount'));
     }
-    public function profile_update($id){
-        $user=User::find($id);
-        if(!$user){
-            toastr()->error("Utilisateur introuvable ");
-            return back();
-        }
 
-        return view("update_profile",compact("user"));
+
+    
+    public function profile_update(){
+
+
+        $user=Auth::user();
+      
+        return view("update_profile",compact('user'));
     }
 
 
@@ -72,7 +76,7 @@ class AdminControllers extends Controller
 
         }
 
-        return redirect()->route('home');
+        return redirect()->route('home.admin');
     }
 
     public function create_user(Request $request){

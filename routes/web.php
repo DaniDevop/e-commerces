@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiClientController;
 use App\Http\Controllers\user\AdminControllers;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\User\FournisseurController;
@@ -69,13 +70,15 @@ Route::get('admin/impression/factures_client/{id}',[FactureController::class,'im
 // Home page
 
 //
+
+
 Route::post('admin/new_compte_users/admin',[AdminControllers::class,'create_user'])->name('create.compte');
 Route::get('admin/deconnexion/admin',[AdminControllers::class,'logout'])->name('logout.compte');
-Route::get('admin/update_profile/admin/{id}',[AdminControllers::class,'profile_update'])->name('details.admin');
+Route::get('admin/update_profile/admin/',[AdminControllers::class,'profile_update'])->name('details.admin');
 Route::post('admin/update_users/admin',[AdminControllers::class,'update_profile_users'])->name('update.compte');
 Route::post('admin/chercher_users/admin',[AdminControllers::class,'rechercher_users'])->name('users.search');
 Route::get('admin/active_or_desactive/admin/{id}',[AdminControllers::class,'active_or_desactive_compte'])->name('changes.etat.compte');
-Route::get('admin/dashboard',[AdminControllers::class,'home'])->name('home');
+Route::get('admin/dashboard',[AdminControllers::class,'home'])->name('home.admin');
 
 
 });
@@ -91,15 +94,15 @@ Route::get('/productByCategorie',[AcceuilController::class,'produit_by_categorie
 // GET
 Route::get('/client/liste-byCategorie/{id}',[ClientController::class,'findProductByCategorie'])->name('client.findByProductCategorie');
 Route::get('/client/supprimer-produit/{id}',[ClientController::class,'remove'])->name('client.remove.produit');
+Route::get('/client/produitByCategorie/{id}',[ClientController::class,'productByCategorie'])->name('produitByCategorie');
 
 Route::get('/client_register',[ClientController::class,'register_client'])->name('register.client');
 Route::get('/client/panier_client/',[ClientController::class,'showPanier'])->name('show.panier.client');
 Route::get('/annulation_commande/client/{id}',[ClientController::class,'annulation_commande'])->name('client.commande.annulation');
 Route::get('/logout_client',[ClientController::class,'logout'])->name('logout.client');
 Route::get('/client/login',[ClientController::class,'login'])->name('login.client');
-Route::get('/lclient/register',[ClientController::class,'register'])->name('register.client');
+Route::get('/client/register',[ClientController::class,'register'])->name('register.client');
 
-Route::post('/client/add-product',[ClientController::class,'addCart'])->name('client.add.cart');
 Route::post('/client/update-product',[ClientController::class,'update_cart'])->name('client.update.cart');
 
 
@@ -107,20 +110,28 @@ Route::post('/client/update-product',[ClientController::class,'update_cart'])->n
 Route::get('/client/findProductByNameOrPrice',[ClientController::class,'findProduct'])->name('client.findProduct');
 
 Route::post('/client/client_auth',[ClientController::class,'login_client'])->name('client.login');
-Route::post('/add_product_to_panier/panier',[ClientController::class,'add_product_panier'])->name('product.panier');
 Route::post('/client_create',[ClientController::class,'create_client'])->name('client.create');
 Route::post('/update_panier_client',[ClientController::class,'update_panier'])->name('update.panier.client');
 Route::post('/client_update_informations/update',[ClientController::class,'client_update_informations'])->name('client.update.informations');
 Route::post('/client_update_password',[ClientController::class,'update_password_clients'])->name('update.password.client');
-Route::post('/ajout-client',[ClientController::class,'create_client'])->name('ajouter.client');
 //----------------------- Fin traitement client ----------------------------------------------
 // Admin authentification
 Route::get('/login_admin/admin',[AdminControllers::class,'login'])->name('login.admin');
 Route::post('/authentification/admin',[AdminControllers::class,'do_login'])->name('do_login.admin');
 
-Route::get('/',[AcceuilController::class,'liste_acceuil'])->name('listes.acceuil');
+Route::get('/',[ClientController::class,'home'])->name('listes.acceuil');
 Route::middleware(['auth_client'])->group(function (){
-Route::get('/validation/commande/client/',[ClientController::class,'valide_commande_login'])->name('valide.login.commande');
+    Route::post('/validation/commande/client/',[ClientController::class,'valide_commande_login'])->name('valide.login.commande');
 Route::get('/client/dahsbord/',[ClientController::class,'dashbord_client'])->name('client.dahsbord.panier');
 
 });
+
+
+Route::get('/client/produitAll',[ApiClientController::class,'index'])->name('auth.cors');
+Route::get('getAllCategory',[ApiClientController::class,'getAllCategory'])->middleware('auth.cors');
+
+Route::get('getAllImage/{filename}',[ApiClientController::class,'getImageProduct'])->middleware('auth.cors');
+Route::post('/client/add-product',[ClientController::class,'addCart'])->middleware('auth.cors');
+
+Route::get('/cartList',[ApiClientController::class,'getAllPanier'])->middleware('auth.cors');
+Route::get('/Deletecart/{id}', [ApiClientController::class, 'deleteProductFromCart'])->middleware('auth.cors');

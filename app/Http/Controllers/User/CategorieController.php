@@ -9,8 +9,8 @@ use App\Models\User\Categorie;
 class CategorieController extends Controller
 {
     public function listes_categorie(){
-        $categorie=Categorie::orderBy('id','DESC')->paginate(5);//permet de gerer le forenisseur d'ordre decroissant
-        return view("categorie.liste",compact('categorie'));
+        $categorieAll=Categorie::orderBy('id','DESC')->paginate(5);//permet de gerer le forenisseur d'ordre decroissant
+        return view("categorie.liste",compact('categorieAll'));
     }
 
 
@@ -18,8 +18,12 @@ class CategorieController extends Controller
     {
         // Valider les données de la requête entrante
         $request->validate([
-            'categorie'=>'required',
+            'categorie'=>'required|unique:categories,categorie',
             
+        ],[
+            'categorie.required'=>'Le nom de la catégorie est requis pour valider',
+            'categorie.unique'=>'Le nom de la catégorie existes déjà dans la base'
+
         ]);
 
         // Si la validation réussit, créer une nouvelle instance d'Etudiant
@@ -36,13 +40,13 @@ class CategorieController extends Controller
 
     public function details_categorie ($id){
 
-        $cate = Categorie::where('id', $id)->first();
+        $categorie = Categorie::where('id', $id)->first();
         //ici on prend $cate qui parcour la table au niaveau de la liste
-        if (!$cate) {
-        return redirect('/categorie')->with('error', "categorie n'a pas été trouvé");
+        if (!$categorie) {
+        return redirect()->back()->with('error', "categorie n'a pas été trouvé");
         }   
 
-        return view('categorie.detail', compact('cate'));
+        return view('categorie.detail', compact('categorie'));
      }
 
      public function update_Categorie(Request $request)//store

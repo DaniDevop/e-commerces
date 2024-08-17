@@ -15,17 +15,15 @@ class AcceuilController extends Controller
     // Page d'acceuil
     public function liste_acceuil()
     {
-        $panier = session()->get('panier',[]);
+        $panier = session()->get('cart',[]);
 
-        $produitAll=DB::table('produits')
-        ->leftJoin('categories','categories.id','=','produits.categorie_id')
-        ->select('categories.categorie','produits.*')->get();
+        $produitAll=Produit::with('categorie')->paginate(10);
         $count=$this->count_tab($panier);
         $client= session()->get('client');
 
-        $categorieAll=Categorie::all();
+        $categorieAll=Categorie::limit(9)->get();
         // session()->flush();
-        return view('layout.client_front',compact('categorieAll','client','panier','produitAll','count'));
+        return view('clients.index',compact('categorieAll','client','panier','produitAll','count'));
     }
     public function produit_by_categorie(Request $request){
         $produitAll=DB::table('produits')
@@ -69,11 +67,14 @@ class AcceuilController extends Controller
             return back();
         }
 
+        $categorieAll=Categorie::all();
+        
+
         $produitCategorie=DB::table('produits')
         ->join('categories','categories.id','=','produits.categorie_id')
         ->where('categories.categorie',$produit->categorie->categorie)//si la table categories.son atribu(categirie) puis leproduit associe au categorie
        ->select('produits.*','categories.categorie')->get();
-        return view("clients.details-product",compact('panier','count','produit','produitCategorie'));
+        return view("clients.details-product",compact('panier','count','produit','produitCategorie','categorieAll'));
     }
 
 

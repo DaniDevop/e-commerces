@@ -1,167 +1,132 @@
-<!-- partie liste -->
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-@include('partials.header')
-<style>
-        /* Add CSS styles for images here */
-        .table img {
-            max-width: 70px; /* Adjust the max-width as needed */
-            height: auto; /* Maintain aspect ratio */
-            border-radius: 5px; /* Add rounded corners if desired */
-            margin-right: 5px; /* Adjust spacing between images */
-        }
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 
-        /* Additional styling for modal images */
-        .modal-body img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-    </style>
-<body>
-    <div class="container-fluid position-relative d-flex p-0">
-        <!-- Spinner Start -->
-        <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
-        <!-- Spinner End -->
+.profile-container {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
 
-        <!-- Sidebar Start -->
-        @include('partials.sidebar')
-        <!-- Sidebar End -->
+.profile-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
 
-        <!-- Content Start -->
-        <div class="content">
-            <!-- Navbar Start -->
-            @include('partials.navbar')
-            <!-- Navbar End -->
+.form-group {
+    margin-bottom: 15px;
+}
 
-            <!-- Sale & Revenue Start -->
-            <div class="col-12">
-                <div class="bg-secondary rounded h-100 p-4">
-                    <h6 class="mb-4">Profile {{ $user->name}}</h6>
-                   
-                    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
 
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Numero</th>
-                                    <th scope="col">Nom</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Tel</th>
-                                    <th scope="col">Profile</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                    <tr>
-                                        <th scope="row">{{ $user->id }}</th>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->tel }}</td>
-                                        <td><img src="{{asset('storage/'.$user->profile)}}" /></td>
-                                    </tr>
-                               
-                            </tbody>
-                        </table>
-                       
-                    </div>
-                </div>
-            </div>
+.form-group input[type="text"], 
+.form-group input[type="email"], 
+.form-group input[type="password"], 
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
-                    <!-- partie ajouter fournisseur -->
+.form-group input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #333;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                   Modification informations
-                </button>
+.form-group input[type="submit"]:hover {
+    background-color: #444;
+}
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-
-                    <form action="{{route('update.compte')}}" method="POST" class="form-group" enctype="multipart/form-data">
-                        @csrf
-                            <div class="mb-3">
-                            <label for="nom" class="form-label">Nom</label>
-                            <input type="text" class="form-control" id="name" name="name" value="{{ $user->name}}" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="adresse" name="email" value="{{ $user->email}}">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="profil" class="form-label">profile</label>
-                                <input type="file" class="form-control" id="profil" name="profile" >
-                            </div>
-                                @if(Auth::check() && Auth::user()->role == 'Admin')
-
-                            <div class="mb-3">
-                                <label for="email" class="form-label">confirmation mot de passe</label>
-                                <select name="role" class="form-select">
-                                <option value="{{ $user->role}}">{{ $user->role}}</option>
-                                <option value="User">User</option>
-                                <option value="Admin">Admin</option>
-                                </select>
-                                
-                            </div>
-                            @endif
-                            
-                            <div class="mb-3">
-                                <label for="profil" class="form-label">Phone</label>
-                                <input type="phone" class="form-control" id="profil" name="tel" value="{{ $user->tel }}">
-                            </div>
-                                <input type="hidden" name="id"  value="{{ $user->id }}" />
-                            
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                            <button type="submit" class="btn btn-primary">Valider</button>
-                        </div>
-                    </form>
-                        </div>
-                       
-                    </div>
-                </div>
-            </div>
-
-            @include('partials.footer')
-            <!-- Footer End -->
-        </div>
-        <!-- Content End -->
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-    </div>
-
-    <!-- JavaScript Libraries -->
-    @include('partials.js')
-    <script>
-    function confirmDelete(deleteUrl) {
-        if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
-            window.location.href = deleteUrl;
-        }
+@media (max-width: 480px) {
+    .profile-container {
+        padding: 15px;
     }
-</script>
-</body>
 
+    .profile-box h2 {
+        font-size: 20px;
+    }
+
+    .form-group input[type="submit"] {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-box">
+            <h2>Edit Profile</h2>
+            <form action="{{route('update.compte')}}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                @if ($errors->any())
+							<div class="alert alert-danger" style="color:red;">
+								<ul>
+									@foreach ($errors->all() as $error)
+										<li>{{ $error }}</li>
+									@endforeach
+								</ul>
+							</div>
+						@endif
+                @csrf
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="name" value="{{$user->name}}" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{$user->email}}" required>
+                </div>
+               
+                <div class="form-group">
+                    <label for="username">Tel</label>
+                    <input type="text" id="username" name="tel" value="{{$user->tel}}" required>
+                </div>
+
+                <input type="hidden" id="username" name="id" value="{{$user->id}}" required>
+
+                <div class="form-group">
+                    <input type="submit" value="Update Profile">
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
 </html>
