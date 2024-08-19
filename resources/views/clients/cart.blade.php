@@ -189,86 +189,80 @@
 
 
 
+<div class="py-3 py-md-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="shopping-cart">
 
-    <div class="py-3 py-md-5 bg-light">
-        <div class="container">
-    
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="shopping-cart">
-
-                        <div class="cart-header d-none d-sm-none d-mb-block d-lg-block">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h4>Products</h4>
-                                </div>
-                                <div class="col-md-2">
-                                    <h4>Price</h4>
-                                </div>
-                                <div class="col-md-2">
-                                    <h4>Quantity</h4>
-                                </div>
-                                <div class="col-md-2">
-                                    <h4>Remove</h4>
-                                </div>
+                    <div class="cart-header d-none d-sm-none d-mb-block d-lg-block">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4 class="text-uppercase font-weight-bold">Products</h4>
+                            </div>
+                            <div class="col-md-2">
+                                <h4 class="text-uppercase font-weight-bold">Prix</h4>
+                            </div>
+                            <div class="col-md-2">
+                                <h4 class="text-uppercase font-weight-bold">Quantité</h4>
+                            </div>
+                            <div class="col-md-2">
+                                <h4 class="text-uppercase font-weight-bold">Supprimer</h4>
                             </div>
                         </div>
+                    </div>
 
-                      @foreach($cart as $cartProduct)
-                        <div class="cart-item">
-                            <div class="row">
-                                <div class="col-md-6 my-auto">
-                                    <a href="">
-                                        <label class="product-name">
-                                            <img src="{{asset('uploads/store/'.$cartProduct['profile'])}}" style="width: 50px; height: 50px" alt="">
-                                            {{$cartProduct['designation']}}
-                                        </label>
+                    @foreach($cart as $cartProduct)
+                    <div class="cart-item p-3 mb-3 border rounded shadow-sm">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 my-auto d-flex">
+                                <img src="{{asset('uploads/store/'.$cartProduct['profile'])}}" class="img-fluid rounded-circle me-3" style="width: 60px; height: 60px" alt="">
+                                <a href="#" class="product-name text-dark text-decoration-none font-weight-bold">
+                                    {{$cartProduct['designation']}}
+                                </a>
+                            </div>
+                            <div class="col-md-2 my-auto">
+                                <label class="price font-weight-bold text-primary"> {{$cartProduct['prix']}} FCFA</label>
+                            </div>
+                            <div class="col-md-2 col-7 my-auto">
+                                <label class="quantity">{{$cartProduct['qte_commande']}}</label>
+                            </div>
+                            <div class="col-md-2 col-5 my-auto">
+                                <div class="remove text-end">
+                                    <a href="{{route('client.remove.produit',['id'=>$cartProduct['produit_id']])}}" class="btn btn-danger btn-sm">
+                                        <i class="fa fa-trash"></i> Remove
                                     </a>
                                 </div>
-                                <div class="col-md-2 my-auto">
-                                    <label class="price"> {{$cartProduct['prix']}} FCFA</label>
-                                </div>
-                                <div class="col-md-2 col-7 my-auto">
-                                {{$cartProduct['qte_commande']}}
-                                </div>
-                                <div class="col-md-2 col-5 my-auto">
-                                    <div class="remove">
-                                        <a href=" {{route('client.remove.produit',['id'=>$cartProduct['produit_id']])}}" class="btn btn-danger btn-sm">
-                                            <i class="fa fa-trash"></i> Remove
-                                        </a>
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                        @endforeach
-                                
                     </div>
+                    @endforeach
+
                 </div>
             </div>
-            
         </div>
+
+        <div class="text-end mt-4">
+            <h5>Total: <span class="text-success">{{ $sommeTotal}} FCFA</span></h5>
+        </div>
+        @if (count($cart))
+        
+        <div class="text-end mt-3">
+            @if($client)
+            <form action="{{route('valide.login.commande')}}" method="POST">
+                @csrf
+                <input type="hidden" name="id" class="btn btn-info" value="{{$client}}">
+                <input type="submit" class="btn btn-success btn-lg" value="Valider la commande">
+            </form>
+            @else
+            <input type="submit" disabled class="btn btn-secondary btn-lg" value="Veuillez vous connecter pour valider la commande">
+            @endif
+        </div>
+        
+        @endif
     </div>
-    
-    <div class="col-md-2 col-5 my-auto">
-                                    <div class="remove">
-                                        <a href="" class="btn btn-danger btn-sm">
-                                        Total : {{ $sommeTotal}} 
-                                        </a>
-                                    </div>
-                                </div>
+</div>
 
-
-                                <div class="col-md-13">
-                                    @if($client)
-                                    <form action="{{route('valide.login.commande')}}" method="POST">
-                                        @csrf
-                                    <input type="hidden" name="id" class="btn btn-info" value="{{$client}}">
-                                        <input type="submit" class="btn btn-info" value="Valider la commande">
-                                    </form>   
-                                    @else  
-                                    <input type="submit" disabled class="btn btn-info" value="Veuillez vous connecter pour valider la commande">
-                                    @endif
-                                </div>
 
 
     <div>
@@ -344,31 +338,5 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
-         async function addProductCart(id) {
-            const url = "http://127.0.0.1:8000/client/add-product";
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({'id': id})
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Erreur lors du contact au serveur: ${response.status}   ID : ${id}`);
-                }
-
-                alert("Produit ajouté avec succès !");
-            } catch (error) {
-                console.error('Erreur:', error);
-                alert("Une erreur s'est produite lors de l'ajout du produit au panier.");
-            }
-        } 
-
- 
-    </script>
 </body>
 </html>

@@ -40,7 +40,7 @@
                                 <li><a class="dropdown-item" href="{{route('register.client')}}"><i class="fa fa-user"></i>Connexion</a></li>
                                 <li><a class="dropdown-item" href="#"><i class="fa fa-list"></i> My Orders</a></li>
                                 <li><a class="dropdown-item" href="{{route('show.panier.client')}}"><i class="fa fa-shopping-cart"></i> My Cart</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fa fa-sign-out"></i> Logout</a></li>
+                                <li><a class="dropdown-item" href="{{route('logout.client')}}"><i class="fa fa-sign-out"></i>Deconnexion</a></li>
                                 </ul>
                             </li>
                         </ul>
