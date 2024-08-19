@@ -33,11 +33,11 @@
                             </li>
                             
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="{{route('register.client')}}" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-user"></i> Compte 
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href=""><i class="fa fa-user"></i>Connexion</a></li>
+                                <li><a class="dropdown-item" href="{{route('register.client')}}"><i class="fa fa-user"></i>Connexion</a></li>
                                 <li><a class="dropdown-item" href="#"><i class="fa fa-list"></i> My Orders</a></li>
                                 <li><a class="dropdown-item" href="{{route('show.panier.client')}}"><i class="fa fa-shopping-cart"></i> My Cart</a></li>
                                 <li><a class="dropdown-item" href="#"><i class="fa fa-sign-out"></i> Logout</a></li>

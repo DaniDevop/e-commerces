@@ -55,27 +55,7 @@ class ClientController extends Controller
      }
 
 
-      public function ajouter_client_traitement(Request $request)//store
-     {
-        $request->validate([
-            'nom'=>'required',
-            'adresse'=>'nullable',
-            'tel'=>'required',
-            'email'=>'nullable',
-        ]);
-       $client = new Client();
-       $client->nom = $request->nom;
-       $client->adresse = $request->adresse;
-       $client->tel = $request->tel;
-       $client->email = $request->email;
-
-
-       $client->save();
-         toastr()->success("client ajouté avec success ✨😃");
-        return back();
-
-     }
-
+  
 
      public function listes_produits()
      {
@@ -170,17 +150,15 @@ class ClientController extends Controller
             toastr()->warning("Les Mots de passes ne sont pas identiques !!");
             return back();
         }
-
-
         $client=new Client();
         $client->nom=$request->nom;
         $client->tel=$request->tel;
-        $client->adresse=$request->adresse;
+        $client->adresse=$request->adresse ?:'';
         $client->email=$request->email ;
         $client->password=Hash::make($request->password);
         $client->save();
-        toastr()->info("Compte creer avec succes 👍✔!!");
-        return redirect()->back();
+        flash()->info("Votre compte est crée avec succes !");
+        return redirect()->route('login.client');
 
 
 

@@ -108,8 +108,8 @@ Route::post('/client/update-product',[ClientController::class,'update_cart'])->n
 // POST
 Route::get('/client/findProductByNameOrPrice',[ClientController::class,'findProduct'])->name('client.findProduct');
 
-Route::post('/client/client_auth',[ClientController::class,'login_client'])->name('client.login');
-Route::post('/client_create',[ClientController::class,'create_client'])->name('client.create');
+Route::post('/client/client_auth',[ClientController::class,'login_client'])->name('client.login.authentification');
+Route::post('/client_create',[ClientController::class,'create_client'])->name('client.create.account');
 Route::post('/update_panier_client',[ClientController::class,'update_panier'])->name('update.panier.client');
 Route::post('/client_update_informations/update',[ClientController::class,'client_update_informations'])->name('client.update.informations');
 Route::post('/client_update_password',[ClientController::class,'update_password_clients'])->name('update.password.client');
