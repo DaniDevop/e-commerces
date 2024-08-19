@@ -81,7 +81,7 @@ class ClientController extends Controller
      {
          $panier = session()->get('cart',[]);
  
-         $produitAll=Produit::with('categorie')->paginate(10);
+         $produitAll=Produit::with('categorie')->get();
          $count=$this->count_tab($panier);
          $client= session()->get('client');
  

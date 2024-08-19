@@ -61,15 +61,71 @@
         color: #fff;
     }
 
-    /* Carousel Product Slider */
-    .product-slider {
-        max-width: 100%;
-        height: 400px;
-        margin: 0 auto;
-    }
-
-
-
+ 
+/* Product Card */
+.product-card{
+    background-color: #fff;
+    border: 1px solid #ccc;
+    margin-bottom: 24px;
+}
+.product-card a{
+    text-decoration: none;
+}
+.product-card .stock{
+    position: absolute;
+    color: #fff;
+    border-radius: 4px;
+    padding: 2px 12px;
+    margin: 8px;
+    font-size: 12px;
+}
+.product-card .product-card-img{
+    max-height: 260px;
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+}
+.product-card .product-card-img img{
+    width: 100%;
+}
+.product-card .product-card-body{
+    padding: 10px 10px;
+}
+.product-card .product-card-body .product-brand{
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 4px;
+    color: #937979;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.product-card .product-card-body .product-name{
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.product-card .product-card-body .selling-price{
+    font-size: 22px;
+    color: #000;
+    font-weight: 600;
+    margin-right: 8px;
+}
+.product-card .product-card-body .original-price{
+    font-size: 18px;
+    color: #937979;
+    font-weight: 400;
+    text-decoration: line-through;
+}
+.product-card .product-card-body .btn1{
+    border: 1px solid;
+    margin-right: 3px;
+    border-radius: 0px;
+    font-size: 12px;
+    margin-top: 10px;
+}
 
 	.carousel-item {
     padding: 10px;
@@ -125,17 +181,17 @@
 
     @include('clients.pages.navbar')
 
-
-	<div class="container mt-3" method="POST" action="{{route('client.findProduct')}}">
+    <div class="container mt-3" method="POST" action="{{route('client.findProduct')}}">
     <form class="d-flex mb-3">
-		@csrf
-        <input class="form-control me-2" type="search" name="search" placeholder="Recherche produit ..." aria-label="Recherche">
+        @csrf
+        <input id="search-input" class="form-control me-2" type="search" name="search" placeholder="Recherche produit ..." aria-label="Recherche">
         <button class="btn btn-outline-success" type="submit">Recherche</button>
     </form>
 
     <form class="mb-3">
         <label for="categorie" class="form-label">Catégorie</label>
-        <select name="categorie" id="categorie" class="form-select">
+        <select id="categorie-select" name="categorie" class="form-select">
+            <option value="">Tous</option>
             @foreach($categorie as $cat)
                 <option value="{{ $cat->id }}">{{ $cat->categorie }}</option>
             @endforeach
@@ -143,41 +199,22 @@
     </form>
 </div>
 
-<div class="container mt-5">
-    <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <!-- First Slide -->
-            <div class="carousel-item active">
-                <div class="row">
-                    @foreach($produitAll as $produit)
-                        @if($loop->iteration % 4 == 1 && !$loop->first)
-                            </div></div><div class="carousel-item"><div class="row">
-                        @endif
-                        <div class="col-md-3">
-                            <div class="card">
-                                <img src="{{asset('uploads/store/'.$produit->image)}}" class="card-img-top" alt="{{ $produit->designation }}">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ $produit->designation }}</h5>
-                                    <p class="card-text">${{ $produit->prix }}</p>
-                                    <button onclick="addProductCart({{ $produit->id }})" class="btn btn-primary">Ajouter au panier</button>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-        <!-- Carousel controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+
+
+<div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner" id="product-list">
+        <!-- Les produits seront rendus ici -->
     </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Précédent</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Suivant</span>
+    </button>
 </div>
+
 
 <div>
         <div class="footer-area">
@@ -253,8 +290,88 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
-        async function addProductCart(id) {
+           <script>
+
+     var app = {{ Illuminate\Support\Js::from($produitAll) }};
+     console.log(app)
+
+     document.addEventListener('DOMContentLoaded', () => {
+    const productList = document.getElementById('product-list');
+    const searchInput = document.getElementById('search-input');
+    const categorySelect = document.getElementById('categorie-select');
+
+    function renderProducts(products) {
+    const chunkSize = 4; // Nombre de produits par slide
+    const productList = document.getElementById('product-list');
+    productList.innerHTML = ''; // Clear existing products
+
+    for (let i = 0; i < products.length; i += chunkSize) {
+        const chunk = products.slice(i, i + chunkSize);
+        const isActive = i === 0 ? 'active' : '';
+
+        let productCards = chunk.map(product => `
+            <div class="col-md-3">
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <label class="stock ${product.stock > 0 ? 'bg-success' : 'bg-danger'}">
+                            ${product.stock > 0 ? 'En Stock' : 'Rupture de Stock'}
+                        </label>
+                        <img src="/uploads/store/${product.image}" alt="${product.designation}">
+                    </div>
+                    <div class="product-card-body">
+                        <p class="product-brand">Catégorie : ${product.categorie.categorie}</p>
+                        <h5 class="product-name">
+                            <a href="">
+                                ${product.designation}
+                            </a>
+                        </h5>
+                        <div>
+                            <span class="selling-price">${product.prix}</span>
+                        </div>
+                        <div class="mt-2">
+                            <a href="#" class="btn btn1" onclick="addProductCart(${product.id})">Ajouter au panier</a>
+                            <a href="/details_product/${product.id}" class="btn btn1">Voir</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        const item = `
+            <div class="carousel-item ${isActive}">
+                <div class="row">
+                    ${productCards}
+                </div>
+            </div>
+        `;
+        productList.innerHTML += item;
+    }
+}
+
+// Rendu initial des produits
+renderProducts(app);
+
+    // Filter products
+    function filterProducts() {
+        const searchQuery = searchInput.value.toLowerCase();
+        const selectedCategory = categorySelect.value;
+
+        const filteredProducts = app.filter(product => {
+            const matchesSearch = product.designation.toLowerCase().includes(searchQuery);
+            const matchesCategory = selectedCategory === '' || product.categorie.id === parseInt(selectedCategory);
+            return matchesSearch && matchesCategory;
+        });
+
+        renderProducts(filteredProducts);
+    }
+
+    // Event listeners for filtering
+    searchInput.addEventListener('input', filterProducts);
+    categorySelect.addEventListener('change', filterProducts);
+});
+
+
+async function addProductCart(id) {
             const url = "http://127.0.0.1:8000/client/add-product";
             try {
                 const response = await fetch(url, {
@@ -263,19 +380,21 @@
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
-                    body: JSON.stringify({ 'id': id })
+                    body: JSON.stringify({'id': id})
                 });
 
                 if (!response.ok) {
                     throw new Error(`Erreur lors du contact au serveur: ${response.status}   ID : ${id}`);
                 }
-
                 alert("Produit ajouté avec succès !");
+              
             } catch (error) {
                 console.error('Erreur:', error);
                 alert("Une erreur s'est produite lors de l'ajout du produit au panier.");
             }
-        }
+        } 
+
+
     </script>
 </body>
 
